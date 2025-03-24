@@ -13,9 +13,10 @@ export async function loginWithDiscord() {
     },
   });
 
-  console.log(data, error);
+  console.log('auth data: ', data)
 
   if (error) {
+    console.error(error);
     redirect('/error');
   }
 
