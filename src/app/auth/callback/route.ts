@@ -30,7 +30,8 @@ export async function GET(request: Request) {
       const { data: profile, error: profile_error } = await supabase
         .from('profiles')
         .select()
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .single();
 
       if (profile_error) {
         console.error('Profile error: ', profile_error);
@@ -55,7 +56,7 @@ export async function GET(request: Request) {
         } else {
           console.log('Profile updated:', updatedProfile);
         }
-      } else {
+      } else if (discordData) {
         // Profile does not exist, insert a new one
 
         const { data, error } = await supabase.from('profiles').insert({
