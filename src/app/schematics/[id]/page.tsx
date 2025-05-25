@@ -2,6 +2,7 @@ import { Container } from "@mantine/core";
 import { createClient } from '@/utils/supabase/server';
 import SchematicPartsDisplay from "@/components/SchematicPartsDisplay";
 import SchematicTuningDisplay from "@/components/SchematicTuningDisplay";
+import Image from "next/image";
 
 
 export default async function SchematicPage({ params }: { params: Promise<{ id: string }> }) {
@@ -27,6 +28,14 @@ export default async function SchematicPage({ params }: { params: Promise<{ id: 
             <p>{schematic.designer_name}</p>
             <SchematicPartsDisplay parts={schematic.parts || []} />
             <SchematicTuningDisplay tuning={schematic.tunings || {}} />
+            <Image
+              src={schematic.image_url}
+              alt={schematic.design_name}
+              layout='responsive'
+              width={800}
+              height={450}
+              style={{ border: '1px solid #ccc', marginTop: '1rem' }}
+            />
             <a href={schematic.file_path} target="_blank" rel="noopener noreferrer">
                 Download Schematic
             </a>
