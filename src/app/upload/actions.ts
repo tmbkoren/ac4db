@@ -2,17 +2,22 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { randomUUID } from 'crypto';
+import partMap from '@/utils/lib/part_mapping.json';
+import { parseAc4aFile } from '@/utils/lib/parseAc4a';
 
 export async function sendSchematic(formData: FormData) {
   const supabase = await createClient();
-  const designName = formData.get('name') as string;
-  const designerName = formData.get('author') as string;
   const imageFile = formData.get('image') as File;
   const schematicFile = formData.get('schematic') as File;
 
   if (!schematicFile) {
     throw new Error('No file provided');
   }
+
+  const parsedSchematic = parseAc4aFile(
+    Buffer.from(await schematicFile.arrayBuffer()),
+    partMap
+  );
 
   const id = randomUUID();
   const schematicPath = `${id}.ac4a`;
@@ -53,20 +58,22 @@ export async function sendSchematic(formData: FormData) {
     throw new Error('User not authenticated');
   }
 
-  const { error: dbError } = await supabase.from('schematics').insert({
-    design_name: designName,
-    designer_name: designerName,
+  const res = await supabase.from('schematics').insert({
+    design_name: parsedSchematic.name,
+    designer_name: parsedSchematic.designer,
     game: "ACFA",
     user_id: user_id,
     file_path: schematicUrl,
-    image_url: imageUrl,
-    parts: {},
-    tunings: {},
+    image_url: imageUrl || null,
+    parts: parsedSchematic.parts,
+    tunings: parsedSchematic.tuning,
   });
 
-  if (dbError) {
+  console.log('Insert result:', res);
+
+  if (res.error) {
     throw new Error('Failed to insert schematic metadata');
   }
 
-  redirect(`/schematics/${id}`);
+  redirect(`/`);
 }

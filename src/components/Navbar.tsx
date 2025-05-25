@@ -30,17 +30,29 @@ export default function Navbar() {
   }, [pathname, supabase.auth]);
 
   return (
-    <header className={classes.header}>
+    <nav className={classes.header}>
       <Container
         size='md'
         className={classes.inner}
       >
-        <h1 className={classes.title}>ac4db</h1>
+        <Link
+          href='/'
+        >
+          <h1 className={classes.title}>ac4db</h1>
+        </Link>
         <Group
           gap={5}
           visibleFrom='xs'
           className={classes.linkContainer}
         >
+          {isLoggedIn && (
+            <Link
+              href='/upload'
+              className={classes.link}
+            >
+              Upload
+            </Link>
+          )}
           <Link
             href={isLoggedIn ? '/profile' : '/login'}
             className={classes.link}
@@ -56,6 +68,6 @@ export default function Navbar() {
           size='sm'
         />
       </Container>
-    </header>
+    </nav>
   );
 }

@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { Container, Stack } from '@mantine/core';
-import { sendSchematic } from '@/app/test/actions';
+import { sendSchematic } from '@/app/upload/actions';
 
 async function PrivatePage() {
   const supabase = await createClient();
@@ -17,29 +17,17 @@ async function PrivatePage() {
       size='md'
       style={{ marginTop: '2rem' }}
     >
-      <h1>Private Page</h1>
-      <p>Welcome to the private page, you are authenticated!</p>
-      <p>User ID: {data.user.id}</p>
-      <p>Email: {data.user.email}</p>
       <form>
         <Stack
           style={{ marginTop: '1rem' }}
         >
-          <input
-            type='text'
-            name='name'
-            placeholder='Schematic Name'
-          />
-          <input
-            type='text'
-            name='author'
-            placeholder='Schematic Author'
-          />
+          <label htmlFor='image'>Image (optional):</label>
           <input
             type='file'
             name='image'
             accept='image/*'
           />
+          <label htmlFor='schematic'>Schematic File:</label>
           <input
             type='file'
             name='schematic'

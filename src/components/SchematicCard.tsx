@@ -1,15 +1,17 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface SchematicCardProps {
+  schematicId: string;
   schematicName: string;
   authorName: string;
   gameName: string;
   imageUrl: string | null;
 }
 
-const SchematicCard = ({ schematicName, authorName, gameName, imageUrl }: SchematicCardProps) => {
+const SchematicCard = ({ schematicId, schematicName, authorName, gameName, imageUrl }: SchematicCardProps) => {
   return (
-    <div>
+    <Link href={`/schematics/${schematicId}`}>
       <h2>{schematicName}</h2>
       <p>Author: {authorName}</p>
       <p>Game: {gameName}</p>
@@ -21,7 +23,7 @@ const SchematicCard = ({ schematicName, authorName, gameName, imageUrl }: Schema
           height={200}
         />
       )}
-    </div>
+    </Link>
   );
 };
 

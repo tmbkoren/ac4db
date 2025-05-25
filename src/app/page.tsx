@@ -18,6 +18,7 @@ export default async function Home() {
         {schematics?.map((s) => (
           <SchematicCard
             key={s.id}
+            schematicId={s.id}
             schematicName={s.design_name}
             authorName={s.designer_name}
             gameName={s.game || 'ACFA'}
