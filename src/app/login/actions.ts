@@ -9,7 +9,7 @@ export async function loginWithDiscord() {
   let callbackUrl = 'http://localhost:3000';
 
   if (process.env.NODE_ENV === 'production') {
-    callbackUrl = 'https://ac6builds.com/auth/';
+    callbackUrl = 'https://ac4db.vercel.app/';
   }
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'discord',
