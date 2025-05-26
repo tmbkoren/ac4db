@@ -1,10 +1,13 @@
 'use client';
 
+import { SchematicTuning } from '@/utils/types/global.types';
 import { Accordion, List } from '@mantine/core';
 
-type Tuning = Record<string, number>;
+type SchematicTuningDisplayProps = {
+  tuning: SchematicTuning;
+};
 
-const SchematicTuningDisplay = ({ tuning }: { tuning: Tuning }) => {
+const SchematicTuningDisplay = ({ tuning }: SchematicTuningDisplayProps) => {
   if (!tuning || Object.keys(tuning).length === 0) {
     return <p>No tuning data available.</p>;
   }

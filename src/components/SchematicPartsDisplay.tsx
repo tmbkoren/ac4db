@@ -1,5 +1,6 @@
 'use client';
 
+import { SchematicParts } from '@/utils/types/global.types';
 import {
   Accordion,
   AccordionControl,
@@ -7,8 +8,12 @@ import {
   AccordionPanel,
   List,
 } from '@mantine/core';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SchematicPartsDisplay = ({ parts }: { parts: any[] }) => {
+
+const SchematicPartsDisplay = ({
+  parts,
+}: {
+  parts: SchematicParts;
+}) => {
   if (!parts || parts.length === 0) {
     return <p>No parts available.</p>;
   }
