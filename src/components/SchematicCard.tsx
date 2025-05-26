@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Card, Container, CardSection } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,33 +14,33 @@ const SchematicCard = ({
   schematicId,
   schematicName,
   authorName,
-  gameName,
+//  gameName,
   imageUrl,
 }: SchematicCardProps) => {
   return (
-    <Container
-      style={{
-        border: '1px solid #ccc',
-        padding: '1rem',
-        borderRadius: '8px',
-        marginBottom: '1rem',
-      }}
+    <Card
+      shadow='sm'
+      padding='lg'
+      radius='md'
+      withBorder
     >
-      <Link href={`/schematics/${schematicId}`}>
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={`${schematicName} schematic`}
-            width={200}
-            height={200}
-          />
-        )}
-        <Container style={{ textAlign: 'center', cursor: 'pointer' }}>
-          <h2>{schematicName}</h2>
-          <p>Author: {authorName}</p>
-        </Container>
-      </Link>
-    </Container>
+      <CardSection>
+        <Link href={`/schematics/${schematicId}`}>
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={`${schematicName} schematic`}
+              width={200}
+              height={200}
+            />
+          )}
+          <Container style={{ textAlign: 'center', cursor: 'pointer' }}>
+            <h2>{schematicName}</h2>
+            <p>Author: {authorName}</p>
+          </Container>
+        </Link>
+      </CardSection>
+    </Card>
   );
 };
 

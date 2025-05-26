@@ -1,7 +1,13 @@
 'use client';
 
-import { Accordion, List } from '@mantine/core';
-
+import {
+  Accordion,
+  AccordionControl,
+  AccordionItem,
+  AccordionPanel,
+  List,
+} from '@mantine/core';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SchematicPartsDisplay = ({ parts }: { parts: any[] }) => {
   if (!parts || parts.length === 0) {
     return <p>No parts available.</p>;
@@ -9,9 +15,9 @@ const SchematicPartsDisplay = ({ parts }: { parts: any[] }) => {
 
   return (
     <Accordion defaultValue='parts'>
-      <Accordion.Item value='parts'>
-        <Accordion.Control>Show Parts</Accordion.Control>
-        <Accordion.Panel>
+      <AccordionItem value='parts'>
+        <AccordionControl>Show Parts</AccordionControl>
+        <AccordionPanel>
           <List>
             {parts.map((part, idx) => (
               <List.Item key={idx}>
@@ -20,8 +26,8 @@ const SchematicPartsDisplay = ({ parts }: { parts: any[] }) => {
               </List.Item>
             ))}
           </List>
-        </Accordion.Panel>
-      </Accordion.Item>
+        </AccordionPanel>
+      </AccordionItem>
     </Accordion>
   );
 };

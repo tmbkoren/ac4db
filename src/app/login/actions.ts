@@ -6,10 +6,15 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function loginWithDiscord() {
   const supabase = await createClient();
+  let callbackUrl = 'http://localhost:3000';
+
+  if (process.env.NODE_ENV === 'production') {
+    callbackUrl = 'https://ac6builds.com/auth/';
+  }
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'discord',
     options: {
-      redirectTo: 'http://localhost:3000/auth/callback',
+      redirectTo: `${callbackUrl}/auth/callback`,
     },
   });
 
