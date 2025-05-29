@@ -1,29 +1,32 @@
-import { SimpleGrid } from '@mantine/core';
+'use client';
+
+import { Stack } from '@mantine/core';
 import SchematicCard from './SchematicCard';
 
 type SchematicGridProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  schematics: Array<{ id: string; [key: string]: any }>;
-  columns?: number;
+  schematics: Array<{
+    id: string;
+    design_name: string;
+    designer_name: string;
+    image_url: string | null;
+    created_at: string; // formatted or ISO string
+  }>;
 };
 
-const SchematicGrid: React.FC<SchematicGridProps> = ({ schematics }) => {
+const SchematicGrid = ({ schematics }: SchematicGridProps) => {
   return (
-    <SimpleGrid
-      cols={{ base: 1, sm: 2, lg: 5 }}
-      verticalSpacing={'xl'}
-    >
+    <Stack gap={1}>
       {schematics.map((schematic) => (
         <SchematicCard
           key={schematic.id}
           schematicId={schematic.id}
           schematicName={schematic.design_name}
           authorName={schematic.designer_name}
-          gameName={schematic.game_name}
-          imageUrl={schematic.image_url || null} // Assuming image_url is the field for the image
+          imageUrl={schematic.image_url}
+          createdAt={schematic.created_at}
         />
       ))}
-    </SimpleGrid>
+    </Stack>
   );
 };
 

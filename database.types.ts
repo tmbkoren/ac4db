@@ -38,7 +38,7 @@ export type Database = {
       }
       schematics: {
         Row: {
-          created_at: string | null
+          created_at: string
           design_name: string
           designer_name: string
           file_path: string
@@ -51,7 +51,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           design_name: string
           designer_name: string
           file_path: string
@@ -64,7 +64,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           design_name?: string
           designer_name?: string
           file_path?: string

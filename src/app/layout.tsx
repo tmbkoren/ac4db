@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dropzone/styles.css';
 
 import {
+  Box,
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
@@ -28,7 +29,7 @@ export default async function RootLayout({
       <body>
         <MantineProvider forceColorScheme='dark'>
           <Navbar />
-          <main>{children}</main>
+          <Box component='main' p={15}>{children}</Box>
         </MantineProvider>
       </body>
     </html>
