@@ -217,6 +217,7 @@
     "9020": "03-AALIYAH/O"
   },
   "Arm Unit": {
+    "0000": "None",
     "0091": "GAN02-NSS-WR",
     "3010": "047ANNR",
     "3020": "051ANNR",
@@ -293,6 +294,7 @@
     "9011": "RF-R100"
   },
   "Back Unit": {
+    "0000": "None",
     "0030": "PLATTE01",
     "0040": "MUSSELSHELL",
     "0201": "WHEELING01",
@@ -360,6 +362,7 @@
     "9100": "Ac45test"
   },
   "Shoulder Unit": {
+    "0000": "None",
     "0030": "BELTCREEK03",
     "0040": "NEMAHA01",
     "0050": "MUSSELSHELL",
