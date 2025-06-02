@@ -1,6 +1,6 @@
 'use client';
 
-import { Burger, Container, Group } from '@mantine/core';
+import { Burger, Container, Drawer, Group, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Navbar.module.css';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { createClient } from '@/utils/supabase/client';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const supabase = createClient();
   const pathname = usePathname();
@@ -19,13 +19,8 @@ export default function Navbar() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (session) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
+      setIsLoggedIn(!!session);
     };
-    // Check session whenever URL changes (including logout redirect)
     checkSession();
   }, [pathname, supabase.auth]);
 
@@ -35,11 +30,11 @@ export default function Navbar() {
         size='md'
         className={classes.inner}
       >
-        <Link
-          href='/'
-        >
+        <Link href='/'>
           <h1 className={classes.title}>ac4db</h1>
         </Link>
+
+        {/* Desktop Links */}
         <Group
           gap={5}
           visibleFrom='xs'
@@ -61,6 +56,7 @@ export default function Navbar() {
           </Link>
         </Group>
 
+        {/* Burger for mobile */}
         <Burger
           opened={opened}
           onClick={toggle}
@@ -68,6 +64,37 @@ export default function Navbar() {
           size='sm'
         />
       </Container>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        position='top'
+        opened={opened}
+        onClose={close}
+        title='ac4db'
+        padding='md'
+        size='xs'
+        hiddenFrom='xs'
+        zIndex={1001}
+      >
+        <Stack>
+          {isLoggedIn && (
+            <Link
+              href='/upload'
+              className={classes.link}
+              onClick={close}
+            >
+              Upload
+            </Link>
+          )}
+          <Link
+            href={isLoggedIn ? '/profile' : '/login'}
+            className={classes.link}
+            onClick={close}
+          >
+            {isLoggedIn ? 'Profile' : 'Login'}
+          </Link>
+        </Stack>
+      </Drawer>
     </nav>
   );
 }
