@@ -40,7 +40,12 @@ const SchematicCard = ({
     >
       <Box className={classes.outer}>
         <Box className={classes.inner}>
-          <Flex direction={'row'}>
+          <Flex
+            direction={{
+              base: 'column',
+              md: 'row',
+            }}
+          >
             <Center className={classes.imageContainer}>
               {imageUrl ? (
                 <Image
@@ -72,11 +77,10 @@ const SchematicCard = ({
                 className={classes.dateTimeContainer}
               >
                 <Text
-                  size={'md'}
                   fw={400}
                   c={'gray'}
                   style={{
-                    fontSize: '30px',
+                    fontSize: 'max(2.3vw, 24px)',
                   }}
                 >
                   {formatted}
@@ -94,11 +98,10 @@ const SchematicCard = ({
                   className={classes.titleContainer}
                 >
                   <Text
-                    size={'md'}
                     fw={400}
                     c={'gray'}
                     style={{
-                      fontSize: '30px',
+                      fontSize: 'max(2.3vw, 24px)',
                     }}
                   >
                     {authorName}
@@ -116,11 +119,10 @@ const SchematicCard = ({
                   }}
                 >
                   <Text
-                    size={'md'}
                     fw={400}
                     c={'gray'}
                     style={{
-                      fontSize: '30px',
+                      fontSize: 'max(2.3vw, 24px)',
                     }}
                   >
                     {schematicName}
