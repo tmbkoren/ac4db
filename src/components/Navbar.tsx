@@ -27,7 +27,6 @@ export default function Navbar() {
   return (
     <nav className={classes.header}>
       <Container
-        size='md'
         className={classes.inner}
       >
         <Link href='/'>

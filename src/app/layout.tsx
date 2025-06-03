@@ -8,6 +8,8 @@ import {
   mantineHtmlProps,
 } from '@mantine/core';
 import Navbar from '@/components/Navbar';
+import theme from '@/utils/theme/theme';
+
 export const metadata = {
   title: 'ac4db',
   description: 'Schematic database for 4th generation Armored Core games',
@@ -27,9 +29,17 @@ export default async function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider forceColorScheme='dark'>
+        <MantineProvider
+          forceColorScheme='dark'
+          theme={theme}
+        >
           <Navbar />
-          <Box component='main' p={15}>{children}</Box>
+          <Box
+            component='main'
+            p={15}
+          >
+            {children}
+          </Box>
         </MantineProvider>
       </body>
     </html>
