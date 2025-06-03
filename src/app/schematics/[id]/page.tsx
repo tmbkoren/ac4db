@@ -1,4 +1,4 @@
-import { Container, Flex } from '@mantine/core';
+import { Container, Flex, Text } from '@mantine/core';
 import { createClient } from '@/utils/supabase/server';
 import SchematicPartsDisplay from '@/components/SchematicPartsDisplay';
 import SchematicTuningDisplay from '@/components/SchematicTuningDisplay';
@@ -29,25 +29,24 @@ export default async function SchematicPage({
   const schematic = data[0];
   const parts = schematic.parts as SchematicParts;
   const tuning = schematic.tunings as SchematicTuning;
-  console.log('Parts: ', schematic);
+  const description = schematic.description || 'No description available';
 
   return (
     <Container>
-      {schematic.image_url ? (
-        <Image
-          src={schematic.image_url || ''}
-          alt={schematic.design_name}
-          layout='responsive'
-          width={800}
-          height={450}
-          style={{ border: '1px solid #ccc', marginTop: '1rem' }}
-        />
-      ) : (
-        <>
-          <h1>{schematic.design_name}</h1>
-          <p>{schematic.designer_name}</p>
-        </>
-      )}
+      <Image
+        src={schematic.image_url || ''}
+        alt={schematic.design_name}
+        layout='responsive'
+        width={800}
+        height={450}
+        style={{ border: '1px solid #ccc', marginTop: '1rem' }}
+      />
+      <Text
+        size='lg'
+        style={{ marginTop: '1rem' }}
+      >
+        {description}
+      </Text>
       <Flex
         direction='row'
         gap='md'

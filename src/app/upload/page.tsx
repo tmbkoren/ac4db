@@ -37,16 +37,15 @@ export default function PrivatePage() {
       size='md'
       style={{ marginTop: '2rem' }}
     >
-      <form
-        action={sendSchematic}
-      >
+      <form action={sendSchematic}>
         <Stack style={{ marginTop: '1rem' }}>
-          <label htmlFor='image'>Image (optional):</label>
+          <label htmlFor='image'>Image:</label>
           <input
             ref={imageInputRef}
             type='file'
             name='image'
             accept='image/*'
+            required
           />
           {previewUrl && (
             <div
@@ -74,6 +73,12 @@ export default function PrivatePage() {
             name='schematic'
             accept='.ac4a'
             required
+          />
+          <label htmlFor='description'>Description (optional):</label>
+          <input
+            type='text'
+            name='description'
+            placeholder='Description (optional)'
           />
           <button type='submit'>Upload</button>
         </Stack>

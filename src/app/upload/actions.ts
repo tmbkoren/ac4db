@@ -9,6 +9,7 @@ export async function sendSchematic(formData: FormData) {
   const supabase = await createClient();
   const imageFile = formData.get('image') as File;
   const schematicFile = formData.get('schematic') as File;
+  const description = formData.get('description') as string;
 
   if (!schematicFile) {
     throw new Error('No file provided');
@@ -61,12 +62,13 @@ export async function sendSchematic(formData: FormData) {
   const res = await supabase.from('schematics').insert({
     design_name: parsedSchematic.name,
     designer_name: parsedSchematic.designer,
-    game: "ACFA",
+    game: 'ACFA',
     user_id: user_id,
     file_path: schematicUrl,
     image_url: imageUrl || null,
     parts: parsedSchematic.parts,
     tunings: parsedSchematic.tuning,
+    description: description || null,
   });
 
   console.log('Insert result:', res);

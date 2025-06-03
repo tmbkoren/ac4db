@@ -9,7 +9,7 @@
 }
 
 .outer:hover {
-  animation: pulseBackground 1s infinite alternate;
+  animation: pulseBackground 2s infinite alternate;
 }
 
 @keyframes pulseBackground {
