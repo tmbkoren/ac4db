@@ -1,6 +1,4 @@
-import { createTheme, DEFAULT_THEME } from '@mantine/core';
-
-console.log(DEFAULT_THEME);
+import { createTheme } from '@mantine/core';
 
 const theme = createTheme({
   colors: {
