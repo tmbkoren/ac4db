@@ -78,7 +78,7 @@ const SchematicCard = ({
               >
                 <Text
                   fw={400}
-                  c={'gray'}
+                  c={'#a5a5a5'}
                   style={{
                     fontSize: 'max(2.3vw, 24px)',
                   }}
@@ -99,7 +99,7 @@ const SchematicCard = ({
                 >
                   <Text
                     fw={400}
-                    c={'gray'}
+                    c={'#a5a5a5'}
                     style={{
                       fontSize: 'max(2.3vw, 24px)',
                     }}
@@ -120,7 +120,7 @@ const SchematicCard = ({
                 >
                   <Text
                     fw={400}
-                    c={'gray'}
+                    c={'#a5a5a5'}
                     style={{
                       fontSize: 'max(2.3vw, 24px)',
                     }}

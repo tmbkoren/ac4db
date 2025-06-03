@@ -1,17 +1,36 @@
 .outer {
   border-radius: 0;
-  border-color: #808080;
+  border-color: #878c90;
   border-width: 2px;
   border-style: solid;
   padding: 5px;
+  background-color: #000000; /* Original background color */
+  transition: background-color 0.3s ease;
+}
+
+.outer:hover {
+  animation: pulseBackground 1s infinite alternate;
+}
+
+@keyframes pulseBackground {
+  0% {
+    background-color: #000000; /* Original background */
+  }
+  100% {
+    background-color: #303030; /* Lighter shade for the pulse effect */
+  }
 }
 
 .inner {
   border-radius: 0;
-  border-color: #4e4e4e;
+  border-color: #3b393c;
   border-width: 2px;
   border-style: solid;
   padding: 3px 0px;
+
+  @mixin hover {
+    border-color: #6f9fa1;
+  }
 }
 
 .imageContainer {
