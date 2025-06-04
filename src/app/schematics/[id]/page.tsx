@@ -48,7 +48,7 @@ export default async function SchematicPage({
         {description}
       </Text>
       <Flex
-        direction='row'
+        direction='column'
         gap='md'
       >
         <SchematicPartsDisplay parts={parts} />

@@ -19,7 +19,7 @@ const SchematicPartsDisplay = ({
   }
 
   return (
-    <Accordion defaultValue='parts'>
+    <Accordion>
       <AccordionItem value='parts'>
         <AccordionControl>Show Parts</AccordionControl>
         <AccordionPanel>
