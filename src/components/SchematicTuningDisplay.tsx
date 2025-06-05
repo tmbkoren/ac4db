@@ -1,6 +1,13 @@
-'use client';
-
-import { Card, Divider, Grid, Stack, Title, Tooltip, rem } from '@mantine/core';
+import {
+  Card,
+  Divider,
+  Grid,
+  GridCol,
+  Stack,
+  Title,
+  Tooltip,
+  rem,
+} from '@mantine/core';
 import { SchematicTuning } from '@/utils/types/global.types';
 import React from 'react';
 
@@ -113,7 +120,7 @@ const SchematicTuningDisplay = ({ tuning }: { tuning: SchematicTuning }) => {
 
   return (
     <Grid gutter='md'>
-      <Grid.Col span={{ base: 12, sm: 6 }}>
+      <GridCol span={{ base: 12, sm: 6 }}>
         <Stack gap='0'>
           {leftColumnSections.map(([title, keys]) => (
             <Section
@@ -124,8 +131,8 @@ const SchematicTuningDisplay = ({ tuning }: { tuning: SchematicTuning }) => {
             />
           ))}
         </Stack>
-      </Grid.Col>
-      <Grid.Col span={{ base: 12, sm: 6 }}>
+      </GridCol>
+      <GridCol span={{ base: 12, sm: 6 }}>
         <Stack gap='0'>
           {rightColumnSections.map(([title, keys]) => (
             <Section
@@ -136,7 +143,7 @@ const SchematicTuningDisplay = ({ tuning }: { tuning: SchematicTuning }) => {
             />
           ))}
         </Stack>
-      </Grid.Col>
+      </GridCol>
     </Grid>
   );
 };
