@@ -5,23 +5,58 @@ import SchematicPartsDisplay from '@/components/SchematicPartsDisplay';
 import SchematicTuningDisplay from '@/components/SchematicTuningDisplay';
 import { Suspense } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { SchematicParts, SchematicTuning } from '@/utils/types/global.types';
+import {
+  SchematicParts,
+  SchematicTuning,
+  SchematicWithDetails, // Import the new type
+} from '@/utils/types/global.types';
 import SchematicHeader from '@/components/SchematicHeader';
 
 async function SchematicDetails({ id }: { id: string }) {
   const supabase = await createClient();
+
   const { data: schematic, error } = await supabase
     .from('schematics')
-    .select('*')
+    .select(
+      `
+      *,
+      schematic_parts (
+        slot_name,
+        parts (
+          name
+        )
+      ),
+      schematic_tunings (
+        tuning_label,
+        tuning_value
+      )
+    `
+    )
     .eq('id', id)
-    .single();
+    .single<SchematicWithDetails>(); // Apply the type to the query result
 
   if (error || !schematic) {
+    console.error('Error fetching schematic:', error);
     notFound();
   }
 
-  const parts = schematic.parts as SchematicParts;
-  const tuning = schematic.tunings as SchematicTuning;
+  // 'p' is now correctly typed
+  const partsForDisplay: SchematicParts = schematic.schematic_parts
+    .filter((p) => p.parts !== null) // Safely filter out null parts
+    .map((p) => ({
+      category: p.slot_name,
+      part_name: p.parts!.name, // Use non-null assertion '!' after filtering
+      part_id: '',
+    }));
+
+  const tuningForDisplay: SchematicTuning =
+    schematic.schematic_tunings.reduce((acc, tuning) => {
+      // Assert that the label from the DB is a valid key of our SchematicTuning type
+      const key = tuning.tuning_label as keyof SchematicTuning;
+      acc[key] = tuning.tuning_value;
+      return acc;
+    }, {} as SchematicTuning);
+
   const description = schematic.description || 'No description available';
 
   return (
@@ -31,25 +66,18 @@ async function SchematicDetails({ id }: { id: string }) {
         designName={schematic.design_name}
         designerName={schematic.designer_name}
       />
-      <Text
-        size='lg'
-        style={{ marginTop: '1rem' }}
-      >
+      <Text size="lg" style={{ marginTop: '1rem' }}>
         {description}
       </Text>
-      <Flex
-        direction='column'
-        gap='md'
-        mt='md'
-      >
-        <SchematicPartsDisplay parts={parts} />
-        <SchematicTuningDisplay tuning={tuning} />
+      <Flex direction="column" gap="md" mt="md">
+        <SchematicPartsDisplay parts={partsForDisplay} />
+        <SchematicTuningDisplay tuning={tuningForDisplay} />
       </Flex>
 
       <a
         href={schematic.file_path}
-        target='_blank'
-        rel='noopener noreferrer'
+        target="_blank"
+        rel="noopener noreferrer"
         style={{ display: 'block', marginTop: '1rem' }}
       >
         Download Schematic

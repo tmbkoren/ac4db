@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 
 export type Part = {
-  category: string;
+  slot_name: string;
   part_id: string;
   part_name: string;
 };
@@ -87,7 +87,7 @@ function extractParts(
     const partId = buffer.readUInt16BE(offset).toString().padStart(4, '0');
     const category = lookupKeys[i];
     const partName = partMap?.[category]?.[partId] ?? `Unknown ID ${partId}`;
-    return { category: label, part_id: partId, part_name: partName };
+    return { slot_name: label, part_id: partId, part_name: partName };
   });
 }
 
@@ -158,3 +158,4 @@ export function parseAc4aFile(
     tuning,
   };
 }
+

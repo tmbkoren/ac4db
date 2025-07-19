@@ -7,9 +7,11 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 // This new component contains the actual data fetching logic
 async function SchematicsList() {
   const supabase = await createClient();
+  // Select only the columns needed for the grid for better performance.
   const { data: schematics, error } = await supabase
     .from('schematics')
-    .select('*');
+    .select('id, design_name, designer_name, image_url, created_at')
+    .order('created_at', { ascending: false });
 
   if (error) {
     // Throwing an error will be caught by the Error Boundary

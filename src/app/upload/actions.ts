@@ -9,7 +9,7 @@ export async function sendSchematic(formData: FormData) {
   const supabase = await createClient();
   const imageFile = formData.get('image') as File;
   const schematicFile = formData.get('schematic') as File;
-  const description = formData.get('description') as string;
+  const description = (formData.get('description') as string | null);
 
   if (!schematicFile) {
     throw new Error('No file provided');
@@ -59,21 +59,34 @@ export async function sendSchematic(formData: FormData) {
     throw new Error('User not authenticated');
   }
 
-  const res = await supabase.from('schematics').insert({
-    design_name: parsedSchematic.name,
-    designer_name: parsedSchematic.designer,
-    game: 'ACFA',
-    user_id: user_id,
-    file_path: schematicUrl,
-    image_url: imageUrl || null,
-    parts: parsedSchematic.parts,
-    tunings: parsedSchematic.tuning,
-    description: description || null,
+  // Helper function to determine the fundamental category for database lookups
+  function getLookupCategory(slotName: string): string {
+    if (slotName.includes('Arm Unit')) return 'Arm Unit';
+    if (slotName.includes('Back Unit')) return 'Back Unit';
+    return slotName; // For Head, Core, Legs, etc., the names are the same
+  }
+
+  // Transform the parser's output into the structure our RPC function needs
+  const partsPayload = parsedSchematic.parts.map(part => ({
+    slot_name: part.slot_name,
+    game_id: part.part_id,
+    lookup_category: getLookupCategory(part.slot_name),
+  }));
+
+  // Call the new RPC function to handle the entire insertion atomically
+  const { error: rpcError } = await supabase.rpc('create_schematic_with_details', {
+    p_design_name: parsedSchematic.name,
+    p_designer_name: parsedSchematic.designer,
+    p_user_id: user_id,
+    p_file_path: schematicUrl,
+    p_image_url: imageUrl || undefined,
+    p_description: description || undefined,
+    p_parts: partsPayload,
+    p_tunings: parsedSchematic.tuning,
   });
 
-  console.log('Insert result:', res);
-
-  if (res.error) {
+  if (rpcError) {
+    console.error('Error inserting schematic via RPC:', rpcError);
     throw new Error('Failed to insert schematic metadata');
   }
 

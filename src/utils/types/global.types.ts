@@ -2,6 +2,29 @@ import { Database } from '../../../database.types';
 
 export type Profile = Database['public']['Tables']['profiles']['Row'];
 
+// This represents the data structure for the new, normalized query
+export type SchematicWithDetails = {
+  id: string;
+  created_at: string;
+  description: string | null;
+  design_name: string;
+  designer_name: string;
+  image_url: string | null;
+  file_path: string;
+  user_id: string;
+  game: string;
+  schematic_parts: {
+    slot_name: string;
+    parts: {
+      name: string;
+    } | null;
+  }[];
+  schematic_tunings: {
+    tuning_label: string;
+    tuning_value: number;
+  }[];
+};
+
 export type SchematicParts = {
   part_id: string;
   category?: string;
