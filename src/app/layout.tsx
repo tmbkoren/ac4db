@@ -9,6 +9,8 @@ import {
 } from '@mantine/core';
 import Navbar from '@/components/Navbar';
 import theme from '@/utils/theme/theme';
+import { Suspense } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export const metadata = {
   title: 'ac4db',
@@ -38,7 +40,7 @@ export default async function RootLayout({
             component='main'
             p={15}
           >
-            {children}
+            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
           </Box>
         </MantineProvider>
       </body>
