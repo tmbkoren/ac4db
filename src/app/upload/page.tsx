@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Container, Stack } from '@mantine/core';
+import { Container, Stack, Textarea } from '@mantine/core';
 import { sendSchematic } from '@/app/upload/actions';
 import Image from 'next/image';
 
@@ -67,18 +67,19 @@ export default function PrivatePage() {
             </div>
           )}
 
-          <label htmlFor='schematic'>Schematic File:</label>
+          <label htmlFor='schematic'>Schematic File (.ac4a):</label>
           <input
             type='file'
             name='schematic'
             accept='.ac4a'
             required
           />
-          <label htmlFor='description'>Description (optional):</label>
-          <input
-            type='text'
+          <Textarea
+            label='Description (optional)'
             name='description'
-            placeholder='Description (optional)'
+            autosize
+            minRows={2}
+            maxRows={4}
           />
           <button type='submit'>Upload</button>
         </Stack>
