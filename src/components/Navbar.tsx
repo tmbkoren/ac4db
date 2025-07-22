@@ -22,7 +22,7 @@ export default function Navbar() {
       } = await supabase.auth.getSession();
       setIsLoggedIn(!!session);
       if (session) {
-        setIsAnonymous(session.user.is_anonymous);
+        setIsAnonymous(!!session.user.is_anonymous);
       }
     };
     checkSession();
