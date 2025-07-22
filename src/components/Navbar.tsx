@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation';
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const supabase = createClient();
   const pathname = usePathname();
 
@@ -20,6 +21,9 @@ export default function Navbar() {
         data: { session },
       } = await supabase.auth.getSession();
       setIsLoggedIn(!!session);
+      if (session) {
+        setIsAnonymous(session.user.is_anonymous);
+      }
     };
     checkSession();
   }, [pathname, supabase.auth]);
@@ -48,10 +52,10 @@ export default function Navbar() {
             </Link>
           )}
           <Link
-            href={isLoggedIn ? '/profile' : '/login'}
+            href={isLoggedIn ? (isAnonymous ? '/login' : '/profile') : '/login'}
             className={classes.link}
           >
-            {isLoggedIn ? 'Profile' : 'Login'}
+            {isLoggedIn ? (isAnonymous ? 'Sign Up' : 'Profile') : 'Login'}
           </Link>
         </Group>
 
@@ -86,14 +90,15 @@ export default function Navbar() {
             </Link>
           )}
           <Link
-            href={isLoggedIn ? '/profile' : '/login'}
+            href={isLoggedIn ? (isAnonymous ? '/login' : '/profile') : '/login'}
             className={classes.link}
             onClick={close}
           >
-            {isLoggedIn ? 'Profile' : 'Login'}
+            {isLoggedIn ? (isAnonymous ? 'Sign Up' : 'Profile') : 'Login'}
           </Link>
         </Stack>
       </Drawer>
     </nav>
   );
 }
+

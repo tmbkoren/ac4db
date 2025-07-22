@@ -15,6 +15,7 @@ export async function loginWithDiscord() {
     provider: 'discord',
     options: {
       redirectTo: `${callbackUrl}/auth/callback`,
+      scopes: 'identify'
     },
   });
 
@@ -29,3 +30,17 @@ export async function loginWithDiscord() {
     redirect(data.url); // use the redirect API for your server framework
   }
 }
+
+export async function loginAnonymously() {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInAnonymously();
+
+  if (error) {
+    console.error(error);
+    redirect('/error');
+  }
+
+  redirect('/');
+}
+
+
