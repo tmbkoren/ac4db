@@ -25,15 +25,24 @@ function readUtf16String(
   offset: number,
   length: number
 ): string {
-  const slice = buffer.subarray(offset, offset + length); // ✅ updated from .slice
-  const decoded = Buffer.from(slice).toString('utf16le'); // Ensures proper decoding
+  const slice = buffer.subarray(offset, offset + length);
+  const decoded = Buffer.from(slice).toString('utf16le');
 
   const nullTerminated = decoded.split('\0')[0];
   const match = nullTerminated.match(/^[A-Za-z0-9 _\-\.]+/);
   return match ? match[0].trim() : '<Invalid UTF-16 Encoding>';
 }
-  
-  
+
+export function parseSchematicHeader(
+  buffer: Buffer
+): { name: string; designer: string } {
+  if (buffer.length < 1 + NAME_SIZE * 2) {
+    throw new Error('Invalid .ac4a file: header is too small.');
+  }
+  const name = readUtf16String(buffer, 1, NAME_SIZE);
+  const designer = readUtf16String(buffer, 1 + NAME_SIZE, NAME_SIZE);
+  return { name, designer };
+}
 
 function readTimestamp(buffer: Buffer, offset: number): bigint {
   return buffer.readBigUInt64BE(offset);
@@ -140,8 +149,7 @@ export function parseAc4aFile(
     throw new Error('Invalid .ac4a file: too small.');
   }
 
-  const schematicName = readUtf16String(buffer, 1, NAME_SIZE);
-  const designerName = readUtf16String(buffer, 1 + NAME_SIZE, NAME_SIZE);
+  const { name, designer } = parseSchematicHeader(buffer);
   const timestamp = readTimestamp(buffer, 192);
   const categoryByte = buffer[200];
   const category = (categoryByte & 0b01111111) + 1;
@@ -150,8 +158,8 @@ export function parseAc4aFile(
   const tuning = extractTuning(buffer);
 
   return {
-    name: schematicName,
-    designer: designerName,
+    name,
+    designer,
     timestamp: Number(timestamp),
     category,
     parts,

@@ -7,10 +7,10 @@ CREATE OR REPLACE FUNCTION create_schematic_with_details(
     p_designer_name TEXT,
     p_user_id UUID,
     p_file_path TEXT,
+    p_image_url TEXT DEFAULT NULL,
+    p_description TEXT DEFAULT NULL,
     p_parts JSONB, -- e.g., '[{"slot_name": "Head", "game_id": "0031", "lookup_category": "Head"}, ...]'
     p_tunings JSONB, -- e.g., '{"en_output": 50, ...}'
-    p_image_url TEXT DEFAULT NULL,
-    p_description TEXT DEFAULT NULL
 )
 RETURNS UUID AS $$
 DECLARE
