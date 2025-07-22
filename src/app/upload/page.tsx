@@ -128,7 +128,7 @@ export default function PrivatePage() {
         order={2}
         style={{ marginBottom: '2rem', textAlign: 'center' }}
       >
-        Upload Your Armored Core Schematic
+        Upload Your ACFA schematic
       </Title>
 
       <Accordion style={{ marginBottom: '2rem' }}>
