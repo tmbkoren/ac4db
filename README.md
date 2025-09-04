@@ -1,3 +1,5 @@
+updating types: 
+npx supabase gen types typescript --project-id "$project-id" --schema public > database.types.ts
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

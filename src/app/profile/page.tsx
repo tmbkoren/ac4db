@@ -14,7 +14,7 @@ export default async function ProfilePage() {
 
   const { data: schematics, error } = await supabase
     .from('schematics')
-    .select('id, design_name, designer_name, image_url, created_at')
+    .select()
     .eq('user_id', user.id);
 
   if (error) {
@@ -22,5 +22,5 @@ export default async function ProfilePage() {
     // Handle error appropriately
   }
 
-  return <ProfileClient user={user} schematics={schematics} />;
+  return <ProfileClient user={user} schematics={schematics || []} />;
 }

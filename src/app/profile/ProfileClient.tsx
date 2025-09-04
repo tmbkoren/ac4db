@@ -4,8 +4,20 @@ import { Button, Paper, Stack, Text, Title, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { signOut, deleteUser } from './actions';
 import SchematicGrid from '@/components/SchematicGrid';
+import { User } from '@supabase/supabase-js';
+import { Database } from '../../../database.types';
 
-export default function ProfileClient({ user, schematics }) {
+type Schematic = Database['public']['Tables']['schematics']['Row'];
+
+interface ProfileClientProps {
+  user: User;
+  schematics: Schematic[];
+}
+
+export default function ProfileClient({
+  user,
+  schematics,
+}: ProfileClientProps) {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (

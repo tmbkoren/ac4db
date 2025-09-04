@@ -8,7 +8,7 @@ import {
   Title, 
   Alert,
 } from '@mantine/core';
-import { loginWithDiscord, loginAnonymously, loginWithEmail } from './actions';
+import { loginWithDiscord, loginWithEmail } from './actions';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -17,37 +17,61 @@ export default function LoginPage() {
   const error = searchParams.get('error');
 
   return (
-    <Stack style={{ marginTop: '2rem' }} align="center">
-      <Title order={2} style={{ marginBottom: '2rem', textAlign: 'center' }}>
+    <Stack
+      style={{ marginTop: '2rem' }}
+      align='center'
+    >
+      <Title
+        order={2}
+        style={{ marginBottom: '2rem', textAlign: 'center' }}
+      >
         Login
       </Title>
       <form>
-        <Stack style={{width: "300px"}}>
+        <Stack style={{ width: '300px' }}>
           {error && (
-            <Alert color="red" title="Login Error">
+            <Alert
+              color='red'
+              title='Login Error'
+            >
               {error}
             </Alert>
           )}
           <TextInput
             required
-            label="Email"
-            name="email"
-            placeholder="you@example.com"
-            type="email"
+            label='Email'
+            name='email'
+            placeholder='you@example.com'
+            type='email'
           />
           <PasswordInput
             required
-            label="Password"
-            name="password"
-            placeholder="Your password"
+            label='Password'
+            name='password'
+            placeholder='Your password'
           />
-          <Button type="submit" formAction={loginWithEmail}>Login</Button>
-          <Button component={Link} href="/signup" variant="outline">
+          <Button
+            type='submit'
+            formAction={loginWithEmail}
+          >
+            Login
+          </Button>
+          <Button
+            component={Link}
+            href='/signup'
+            variant='outline'
+          >
             Sign up
           </Button>
-          <Button type="submit" formAction={loginWithDiscord}>Login with Discord</Button>
-          <Button type="submit" formAction={loginAnonymously} variant="default">Continue as Guest</Button>
         </Stack>
+      </form>
+      <form>
+        <Button
+          type='submit'
+          formAction={loginWithDiscord}
+        >
+          Login with Discord
+        </Button>
       </form>
     </Stack>
   );
