@@ -3,31 +3,27 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
+import { headers } from 'next/headers';
 
 export async function loginWithDiscord() {
   const supabase = await createClient();
-  let callbackUrl = 'http://localhost:3000';
+  const origin = (await headers()).get('origin');
 
-  if (process.env.NODE_ENV === 'production') {
-    callbackUrl = 'https://ac4db.vercel.app/';
-  }
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'discord',
     options: {
-      redirectTo: `${callbackUrl}/auth/callback`,
-      scopes: 'identify'
+      redirectTo: `${origin}/auth/callback`,
+      scopes: 'identify',
     },
   });
 
-  console.log('auth data: ', data)
-
   if (error) {
     console.error(error);
-    redirect('/error');
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   if (data.url) {
-    redirect(data.url); // use the redirect API for your server framework
+    redirect(data.url);
   }
 }
 
@@ -36,8 +32,7 @@ export async function loginAnonymously() {
   const { error } = await supabase.auth.signInAnonymously();
 
   if (error) {
-    console.error(error);
-    redirect('/error');
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   redirect('/');
@@ -54,10 +49,39 @@ export async function loginWithEmail(formData: FormData) {
   });
 
   if (error) {
+    if (error.message === 'Email not confirmed') {
+      redirect(
+        `/login?error=email_not_confirmed&email=${encodeURIComponent(email)}`
+      );
+    }
     redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   redirect('/');
+}
+
+export async function resendVerificationEmail(formData: FormData) {
+  const supabase = await createClient();
+  const origin = (await headers()).get('origin');
+  const email = formData.get('email') as string;
+
+  const { error } = await supabase.auth.resend({
+    type: 'signup',
+    email: email,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    redirect(
+      `/login?error=${encodeURIComponent(
+        error.message
+      )}&email=${encodeURIComponent(email)}`
+    );
+  }
+
+  redirect('/confirm-email');
 }
 
 
