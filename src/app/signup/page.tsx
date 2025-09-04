@@ -1,30 +1,30 @@
 'use client';
 
 import { 
+  Container, 
   Stack, 
   TextInput, 
   PasswordInput, 
   Button, 
   Title, 
-  Alert,
+  Alert 
 } from '@mantine/core';
-import { loginWithDiscord, loginAnonymously, loginWithEmail } from './actions';
-import Link from 'next/link';
+import { signup } from './actions';
 import { useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+export default function SignupPage() {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
   return (
-    <Stack style={{ marginTop: '2rem' }} align="center">
+    <Container size="xs" style={{ marginTop: '2rem' }}>
       <Title order={2} style={{ marginBottom: '2rem', textAlign: 'center' }}>
-        Login
+        Create an Account
       </Title>
-      <form>
-        <Stack style={{width: "300px"}}>
+      <form action={signup}>
+        <Stack>
           {error && (
-            <Alert color="red" title="Login Error">
+            <Alert color="red" title="Signup Error">
               {error}
             </Alert>
           )}
@@ -41,14 +41,9 @@ export default function LoginPage() {
             name="password"
             placeholder="Your password"
           />
-          <Button type="submit" formAction={loginWithEmail}>Login</Button>
-          <Button component={Link} href="/signup" variant="outline">
-            Sign up
-          </Button>
-          <Button type="submit" formAction={loginWithDiscord}>Login with Discord</Button>
-          <Button type="submit" formAction={loginAnonymously} variant="default">Continue as Guest</Button>
+          <Button type="submit">Sign up</Button>
         </Stack>
       </form>
-    </Stack>
+    </Container>
   );
 }

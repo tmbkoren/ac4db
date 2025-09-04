@@ -1,8 +1,6 @@
-import { Button, Paper, Stack, Text, Title } from '@mantine/core';
-import { signOut } from './actions';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import SchematicGrid from '@/components/SchematicGrid';
+import ProfileClient from './ProfileClient';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -24,19 +22,5 @@ export default async function ProfilePage() {
     // Handle error appropriately
   }
 
-  return (
-    <Stack>
-      <Paper p='md' shadow='xs'>
-        <Title order={2}>Profile</Title>
-        <Text>Email: {user.email}</Text>
-        <Text>Joined: {new Date(user.created_at).toLocaleDateString()}</Text>
-        <form action={signOut}>
-          <Button type='submit' mt='md'>
-            Logout
-          </Button>
-        </form>
-      </Paper>
-      <SchematicGrid schematics={schematics || []} />
-    </Stack>
-  );
+  return <ProfileClient user={user} schematics={schematics} />;
 }

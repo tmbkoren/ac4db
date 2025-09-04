@@ -40,6 +40,20 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (user && !request.nextUrl.pathname.startsWith('/complete-profile') && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/signup') && !request.nextUrl.pathname.startsWith('/auth/callback') && !request.nextUrl.pathname.startsWith('/confirm-email')) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('user_id', user.id)
+      .single();
+
+    if (profile && !profile.username) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/complete-profile';
+      return NextResponse.redirect(url);
+    }
+  }
+
   if (
     !user &&
     (request.nextUrl.pathname.startsWith('/logout') ||
