@@ -4,26 +4,36 @@ import { createClient } from '@/utils/supabase/server';
 import { AppShell, Box } from '@mantine/core';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import SearchAndFilter from '@/components/SearchAndFilter';
+import Pagination from '@/components/Pagination';
+
+const ITEMS_PER_PAGE = 10;
 
 type HomePageProps = {
   searchParams?: {
     q?: string;
     sort?: string;
+    page?: string;
   };
 };
 
-// This new component contains the actual data fetching logic
-async function SchematicsList({ query, sortBy }: { query?: string; sortBy?: string }) {
+async function SchematicsList({
+  query,
+  sortBy,
+  currentPage,
+}: {
+  query?: string;
+  sortBy?: string;
+  currentPage: number;
+}) {
   const supabase = await createClient();
 
-  // Start building the query
+  // Start building the query for data fetching
   let queryBuilder = supabase
     .from('schematics')
     .select('id, design_name, designer_name, image_url, created_at');
 
   // Apply search filter if a query is provided
   if (query) {
-    // Use 'or' to search in both design_name and designer_name
     queryBuilder = queryBuilder.or(
       `design_name.ilike.%${query}%,designer_name.ilike.%${query}%`
     );
@@ -33,26 +43,59 @@ async function SchematicsList({ query, sortBy }: { query?: string; sortBy?: stri
   const isAscending = sortBy === 'oldest';
   queryBuilder = queryBuilder.order('created_at', { ascending: isAscending });
 
+  // Apply pagination
+  const from = (currentPage - 1) * ITEMS_PER_PAGE;
+  const to = from + ITEMS_PER_PAGE - 1;
+  queryBuilder = queryBuilder.range(from, to);
+
   const { data: schematics, error } = await queryBuilder;
 
   if (error) {
-    // Throwing an error will be caught by the Error Boundary
     throw new Error(`Failed to fetch schematics: ${error.message}`);
   }
 
   return <SchematicGrid schematics={schematics} />;
 }
 
+async function PaginationData({ query }: { query?: string }) {
+  const supabase = await createClient();
+
+  // Build query to count the total number of matching schematics
+  let countQueryBuilder = supabase
+    .from('schematics')
+    .select('*', { count: 'exact', head: true });
+
+  if (query) {
+    countQueryBuilder = countQueryBuilder.or(
+      `design_name.ilike.%${query}%,designer_name.ilike.%${query}%`
+    );
+  }
+
+  const { count, error } = await countQueryBuilder;
+
+  if (error) {
+    throw new Error(`Failed to count schematics: ${error.message}`);
+  }
+
+  const totalPages = Math.ceil((count ?? 0) / ITEMS_PER_PAGE);
+
+  return <Pagination totalPages={totalPages} />;
+}
+
 export default function Home({ searchParams }: HomePageProps) {
   const query = searchParams?.q;
   const sortBy = searchParams?.sort;
+  const page = Number(searchParams?.page) || 1;
 
   return (
     <AppShell>
       <Box p="md">
         <SearchAndFilter />
-        <Suspense key={query + sortBy} fallback={<LoadingSpinner />}>
-          <SchematicsList query={query} sortBy={sortBy} />
+        <Suspense key={query + sortBy + page} fallback={<LoadingSpinner />}>
+          <SchematicsList query={query} sortBy={sortBy} currentPage={page} />
+        </Suspense>
+        <Suspense fallback={null}>
+          <PaginationData query={query} />
         </Suspense>
       </Box>
     </AppShell>
