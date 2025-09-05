@@ -21,7 +21,6 @@ const SchematicCard = ({
   imageUrl,
   createdAt,
 }: SchematicCardProps) => {
-  console.log('createdAt:', createdAt);
   const date = new Date(createdAt);
 
   // Helper to pad single digits with a leading zero

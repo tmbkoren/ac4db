@@ -1,13 +1,23 @@
+import { confirmEmail } from '@/app/confirm-email/actions';
 
-import { Container, Title, Text } from '@mantine/core';
-
-export default function ConfirmEmailPage() {
+export default function ConfirmEmailPage({
+  searchParams,
+}: {
+  searchParams: { token_hash: string; type: string };
+}) {
   return (
-    <Container size="xs" style={{ marginTop: '2rem', textAlign: 'center' }}>
-      <Title order={2}>Check your email</Title>
-      <Text mt="md">
-        We&apos;ve sent a verification link to your email address. Please click the link to complete your registration.
-      </Text>
-    </Container>
+    <div>
+      <h1>Confirm your email</h1>
+      <p>Click the button below to confirm your email address.</p>
+      <form action={confirmEmail}>
+        <input
+          type="hidden"
+          name="token_hash"
+          value={searchParams.token_hash}
+        />
+        <input type="hidden" name="type" value={searchParams.type} />
+        <button type="submit">Confirm Email</button>
+      </form>
+    </div>
   );
 }
