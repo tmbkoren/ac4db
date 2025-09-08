@@ -11,6 +11,7 @@ import {
   SchematicWithDetails, // Import the new type
 } from '@/utils/types/global.types';
 import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
+import LinkBtn from '@/components/LinkBtn/LinkBtn';
 
 async function SchematicDetails({ id }: { id: string }) {
   const supabase = await createClient();
@@ -49,13 +50,15 @@ async function SchematicDetails({ id }: { id: string }) {
       part_id: '',
     }));
 
-  const tuningForDisplay: SchematicTuning =
-    schematic.schematic_tunings.reduce((acc, tuning) => {
+  const tuningForDisplay: SchematicTuning = schematic.schematic_tunings.reduce(
+    (acc, tuning) => {
       // Assert that the label from the DB is a valid key of our SchematicTuning type
       const key = tuning.tuning_label as keyof SchematicTuning;
       acc[key] = tuning.tuning_value;
       return acc;
-    }, {} as SchematicTuning);
+    },
+    {} as SchematicTuning
+  );
 
   const description = schematic.description || 'No description available';
 
@@ -66,22 +69,23 @@ async function SchematicDetails({ id }: { id: string }) {
         designName={schematic.design_name}
         designerName={schematic.designer_name}
       />
-      <Text size="lg" style={{ marginTop: '1rem' }}>
+      <Text
+        size='lg'
+        style={{ marginTop: '1rem' }}
+      >
         {description}
       </Text>
-      <Flex direction="column" gap="md" mt="md">
+      <Flex
+        direction='column'
+        gap='md'
+        mt='md'
+        mb='md'
+      >
         <SchematicPartsDisplay parts={partsForDisplay} />
         <SchematicTuningDisplay tuning={tuningForDisplay} />
       </Flex>
 
-      <a
-        href={schematic.file_path}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ display: 'block', marginTop: '1rem' }}
-      >
-        Download Schematic
-      </a>
+      <LinkBtn href={`/schematics/${id}/edit`}>Download schematic</LinkBtn>
     </Container>
   );
 }
