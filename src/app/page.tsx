@@ -1,19 +1,19 @@
 import { Suspense } from 'react';
-import SchematicGrid from '@/components/SchematicGrid';
+import SchematicGrid from '@/components/SchematicGrid/SchematicGrid';
 import { createClient } from '@/utils/supabase/server';
 import { AppShell, Box } from '@mantine/core';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import SearchAndFilter from '@/components/SearchAndFilter';
-import Pagination from '@/components/Pagination';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+import SearchAndFilter from '@/components/SearchAndFilter/SearchAndFilter';
+import Pagination from '@/components/Pagination/Pagination';
 
 const ITEMS_PER_PAGE = 10;
 
 type HomePageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     q?: string;
     sort?: string;
     page?: string;
-  };
+  }>;
 };
 
 async function SchematicsList({
@@ -82,17 +82,25 @@ async function PaginationData({ query }: { query?: string }) {
   return <Pagination totalPages={totalPages} />;
 }
 
-export default function Home({ searchParams }: HomePageProps) {
-  const query = searchParams?.q;
+export default async function Home(props: HomePageProps) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.q || '';
   const sortBy = searchParams?.sort;
   const page = Number(searchParams?.page) || 1;
 
   return (
     <AppShell>
-      <Box p="md">
+      <Box p='md'>
         <SearchAndFilter />
-        <Suspense key={query + sortBy + page} fallback={<LoadingSpinner />}>
-          <SchematicsList query={query} sortBy={sortBy} currentPage={page} />
+        <Suspense
+          key={query + sortBy + page}
+          fallback={<LoadingSpinner />}
+        >
+          <SchematicsList
+            query={query}
+            sortBy={sortBy}
+            currentPage={page}
+          />
         </Suspense>
         <Suspense fallback={null}>
           <PaginationData query={query} />

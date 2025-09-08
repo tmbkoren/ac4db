@@ -1,7 +1,7 @@
 'use client';
 
 import { Stack } from '@mantine/core';
-import SchematicCard from './SchematicCard';
+import SchematicCard from '../SchematicCard/SchematicCard';
 
 type SchematicGridProps = {
   schematics: Array<{

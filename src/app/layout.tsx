@@ -7,10 +7,10 @@ import {
   MantineProvider,
   mantineHtmlProps,
 } from '@mantine/core';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 import theme from '@/utils/theme/theme';
 import { Suspense } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {

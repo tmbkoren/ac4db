@@ -27,17 +27,6 @@ export async function loginWithDiscord() {
   }
 }
 
-export async function loginAnonymously() {
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInAnonymously();
-
-  if (error) {
-    redirect(`/login?error=${encodeURIComponent(error.message)}`);
-  }
-
-  redirect('/');
-}
-
 export async function loginWithEmail(formData: FormData) {
   const supabase = await createClient();
   const email = formData.get('email') as string;

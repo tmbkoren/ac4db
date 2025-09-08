@@ -1,16 +1,16 @@
 import { Container, Flex, Text } from '@mantine/core';
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
-import SchematicPartsDisplay from '@/components/SchematicPartsDisplay';
-import SchematicTuningDisplay from '@/components/SchematicTuningDisplay';
+import SchematicPartsDisplay from '@/components/SchematicPartsDisplay/SchematicPartsDisplay';
+import SchematicTuningDisplay from '@/components/SchematicTuningDisplay/SchematicTuningDisplay';
 import { Suspense } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import {
   SchematicParts,
   SchematicTuning,
   SchematicWithDetails, // Import the new type
 } from '@/utils/types/global.types';
-import SchematicHeader from '@/components/SchematicHeader';
+import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
 
 async function SchematicDetails({ id }: { id: string }) {
   const supabase = await createClient();

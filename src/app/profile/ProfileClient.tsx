@@ -3,7 +3,7 @@
 import { Button, Paper, Stack, Text, Title, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { signOut, deleteUser } from './actions';
-import SchematicGrid from '@/components/SchematicGrid';
+import SchematicGrid from '@/components/SchematicGrid/SchematicGrid';
 import { User } from '@supabase/supabase-js';
 import { Database } from '../../../database.types';
 
