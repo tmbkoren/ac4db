@@ -1,34 +1,42 @@
 import { createClient } from '@/utils/supabase/server';
-import { type NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    console.log(await params);
+    const { id } = await params;
+    console.log('Requested schematic ID:', id);
     const supabase = await createClient();
-    const schematicId = params.id;
 
-    if (!schematicId) {
-      return new NextResponse(JSON.stringify({ error: 'Schematic ID is required.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    if (!id) {
+      return new NextResponse(
+        JSON.stringify({ error: 'Schematic ID is required.' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     // First, retrieve the file path from the schematics table
     const { data: schematicData, error: dbError } = await supabase
       .from('schematics')
-      .select('file_path')
-      .eq('id', schematicId)
+      .select('file_path, design_name, designer_name')
+      .eq('id', id)
       .single();
 
     if (dbError || !schematicData) {
       console.error('Database error:', dbError?.message);
-      return new NextResponse(JSON.stringify({ error: 'Schematic not found.' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new NextResponse(
+        JSON.stringify({ error: 'Schematic not found.' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     const fullUrl = schematicData.file_path;
@@ -64,17 +72,20 @@ export async function GET(
     }
 
     if (!data) {
-      return new NextResponse(JSON.stringify({ error: 'File data is empty.' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new NextResponse(
+        JSON.stringify({ error: 'File data is empty.' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/octet-stream');
     headers.set(
       'Content-Disposition',
-      `attachment; filename="${schematicId}.ac4a"`
+      `attachment; filename="${schematicData.design_name}_${schematicData.designer_name}.ac4a"`
     );
     headers.set('Content-Length', data.size.toString());
 
@@ -82,9 +93,12 @@ export async function GET(
   } catch (e) {
     const error = e as Error;
     console.error('Unexpected error in download route:', error.message);
-    return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new NextResponse(
+      JSON.stringify({ error: 'Internal Server Error' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 }
