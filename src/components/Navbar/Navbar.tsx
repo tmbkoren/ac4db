@@ -1,12 +1,13 @@
 'use client';
 
-import { Burger, Container, Drawer, Group, Stack } from '@mantine/core';
+import { Anchor, Burger, Container, Drawer, Group, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Navbar.module.css';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { usePathname } from 'next/navigation';
+import LinkBtn from '../LinkBtn/LinkBtn';
 
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -30,33 +31,35 @@ export default function Navbar() {
 
   return (
     <nav className={classes.header}>
-      <Container
-        className={classes.inner}
-      >
-        <Link href='/'>
-          <h1 className={classes.title}>ac4db</h1>
-        </Link>
+      <Container className={classes.inner}>
+        <Anchor
+          component={Link}
+          href='/'
+          c={'#a5a5a5'}
+        >
+          <h1 className={classes.title}>AC4DB</h1>
+        </Anchor>
 
         {/* Desktop Links */}
         <Group
-          gap={5}
+          gap={10}
           visibleFrom='xs'
           className={classes.linkContainer}
         >
           {isLoggedIn && (
-            <Link
+            <LinkBtn
               href='/upload'
-              className={classes.link}
+              size='sm'
             >
               Upload
-            </Link>
+            </LinkBtn>
           )}
-          <Link
+          <LinkBtn
             href={isLoggedIn ? (isAnonymous ? '/login' : '/profile') : '/login'}
-            className={classes.link}
+            size='sm'
           >
             {isLoggedIn ? (isAnonymous ? 'Sign Up' : 'Profile') : 'Login'}
-          </Link>
+          </LinkBtn>
         </Group>
 
         {/* Burger for mobile */}
@@ -101,4 +104,3 @@ export default function Navbar() {
     </nav>
   );
 }
-

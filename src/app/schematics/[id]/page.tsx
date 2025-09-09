@@ -11,7 +11,7 @@ import {
   SchematicWithDetails, // Import the new type
 } from '@/utils/types/global.types';
 import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
-import LinkBtn from '@/components/LinkBtn/LinkBtn';
+import SchematicActions from '@/components/SchematicActions/SchematicActions';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -115,9 +115,7 @@ async function SchematicDetails({ id }: { id: string }) {
         <SchematicTuningDisplay tuning={tuningForDisplay} />
       </Flex>
 
-      <LinkBtn href={`/api/schematics/${id}/download`}>
-        Download schematic
-      </LinkBtn>
+      <SchematicActions schematicId={id} />
     </Container>
   );
 }

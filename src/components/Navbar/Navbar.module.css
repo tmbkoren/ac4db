@@ -1,20 +1,27 @@
 .header {
-  height: 56px;
   margin-bottom: 2rem;
   background-color: var(--mantine-color-body);
-  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-bottom: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .inner {
-  height: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .title {
-    padding-right: 16px;
-    border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: '#a5a5a5';
+  padding-right: 16px;
+  border-right: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.title:visited {
+  color: '#a5a5a5';
 }
 
 .link {
@@ -28,8 +35,12 @@
   font-weight: 500;
 
   @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    background-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-6)
+    );
   }
+
 
   [data-mantine-color-scheme] &[data-active] {
     background-color: var(--mantine-color-blue-filled);
