@@ -12,18 +12,19 @@ import {
 } from '@/utils/types/global.types';
 import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
 import LinkBtn from '@/components/LinkBtn/LinkBtn';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 
-export async function generateMetadata(
-  { params }: { params: { id: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
   const supabase = await createClient();
 
   const { data: schematic, error } = await supabase
     .from('schematics')
     .select('design_name, image_url')
-    .eq('id', params.id)
+    .eq('id', (await params).id)
     .single();
 
   if (error || !schematic) {
