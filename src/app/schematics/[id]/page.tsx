@@ -85,7 +85,7 @@ async function SchematicDetails({ id }: { id: string }) {
         <SchematicTuningDisplay tuning={tuningForDisplay} />
       </Flex>
 
-      <LinkBtn href={`/schematics/${id}/edit`}>Download schematic</LinkBtn>
+      <LinkBtn href={`/api/schematics/${id}/download`}>Download schematic</LinkBtn>
     </Container>
   );
 }
