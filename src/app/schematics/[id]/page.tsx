@@ -12,6 +12,35 @@ import {
 } from '@/utils/types/global.types';
 import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
 import LinkBtn from '@/components/LinkBtn/LinkBtn';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const supabase = await createClient();
+
+  const { data: schematic, error } = await supabase
+    .from('schematics')
+    .select('design_name, image_url')
+    .eq('id', params.id)
+    .single();
+
+  if (error || !schematic) {
+    console.error('Error fetching schematic metadata:', error);
+    return {};
+  }
+
+  return {
+    title: 'ac4db',
+    description: schematic.design_name,
+    openGraph: {
+      title: 'ac4db',
+      description: schematic.design_name,
+      images: [{ url: schematic.image_url?.toString() || '' }],
+    },
+  };
+}
 
 async function SchematicDetails({ id }: { id: string }) {
   const supabase = await createClient();
@@ -85,7 +114,9 @@ async function SchematicDetails({ id }: { id: string }) {
         <SchematicTuningDisplay tuning={tuningForDisplay} />
       </Flex>
 
-      <LinkBtn href={`/api/schematics/${id}/download`}>Download schematic</LinkBtn>
+      <LinkBtn href={`/api/schematics/${id}/download`}>
+        Download schematic
+      </LinkBtn>
     </Container>
   );
 }
