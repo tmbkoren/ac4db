@@ -20,7 +20,10 @@
     "0020": "KIRITUMI-H",
     "4020": "HILBERT-G7H",
     "4041": "SOLDNER-G8H",
-    "0041": "ARGYROS/H"
+    "0041": "ARGYROS/H",
+    "9000": "HD-LANCEL",
+    "9010": "047AN02",
+    "9300": "063AN02"
   },
   "Core": {
     "0021": "GAN02-NSS-C",
@@ -38,7 +41,10 @@
     "6011": "XCR-SOBRERO",
     "0010": "GAN01-SS-C",
     "4031": "SOLDNER-G8C",
-    "0031": "ARGYROS/C"
+    "0031": "ARGYROS/C",
+    "9000": "CR-LANCEL",
+    "9010": "047AN01",
+    "9100": "VOB"
   },
   "Arms": {
     "0010": "GAN01-SS-AL",
@@ -69,6 +75,8 @@
     "0061": "ARGYROS/XA",
     "2130": "MADNESS/XA",
     "4030": "A06-AURORA",
+    "9000": "AM-LANCEL",
+    "9010": "047AN03",
     "9121": "45_Aspina"
   },
   "Legs": {
@@ -102,7 +110,9 @@
     "0340": "KIRITUMI-L",
     "0071": "RAIDEN-L",
     "4320": "L02-ALBIREO",
-    "4051": "L09-RIGEL"
+    "4051": "L09-RIGEL",
+    "9000": "LG-LANCEL",
+    "9010": "049AN04"
   },
   "FCS": {
     "0010": "YELLOWSTONE01",
@@ -117,7 +127,9 @@
     "5011": "EKHAZAR-FCS",
     "2010": "INBLUE",
     "2020": "LAURA",
-    "2030": "BLUEXS"
+    "2030": "BLUEXS",
+    "9000": "047AN05",
+    "9010": "047AN05"
   },
   "Generator": {
     "0010": "GAN01-SS-GL",
@@ -133,7 +145,9 @@
     "2030": "LINSTANT/G",
     "0020": "GAN01-SS-G",
     "0041": "ARGYROS/G",
-    "2020": "S08-MAXWELL"
+    "2020": "S08-MAXWELL",
+    "9000": "GN-HOGIRE",
+    "9010": "GN-HOGIRE"
   },
   "Main Booster": {
     "0010": "GAN01-SS-ML.CG",
@@ -149,7 +163,9 @@
     "1041": "CB-LAHIRE",
     "0020": "GAN01-SS-M.CG",
     "4010": "MB107-POLARIS",
-    "0041": "ARGYROS/M"
+    "0041": "ARGYROS/M",
+    "9000": "CB-RACHEL",
+    "9010": "CB-RACHEL"
   },
   "Back Booster": {
     "0021": "GAN02-NSS-B.CG",
@@ -160,7 +176,9 @@
     "1021": "LB-LAHIRE",
     "0010": "GAN01-SS-B.CG",
     "4010": "BB103-SCHEAT",
-    "0031": "ARGYROS/B"
+    "0031": "ARGYROS/B",
+    "9000": "LB-HOGIRE",
+    "9010": "03-AALIYAH/B"
   },
   "Side Booster": {
     "0021": "GAN02-NSS-S.CG",
@@ -174,7 +192,10 @@
     "2010": "S02-ORTEGA",
     "0010": "GAN01-SS-S.CG",
     "4010": "SB128-SCHEDAR",
-    "0031": "ARGYROS/S"
+    "0031": "ARGYROS/S",
+    "9000": "AB-HOGIRE",
+    "9010": "AB-HOLOFERNES",
+    "9020": "AB-HOLOFERNES"
   },
   "Overed Booster": {
     "0021": "GAN02-NSS-O.CG",
@@ -190,7 +211,10 @@
     "1041": "KRB-JUDITH",
     "1051": "KRB-LAHIRE",
     "1061": "KRB-SOBRERO",
-    "0041": "ARGYROS/AO"
+    "0041": "ARGYROS/AO",
+    "9000": "KB-JUDITH",
+    "9010": "03-AALIYAH/O",
+    "9020": "03-AALIYAH/O"
   },
   "Arm Unit": {
     "0000": "None",
@@ -263,12 +287,16 @@
     "1131": "KB-O004",
     "0060": "NIOBRARA03",
     "0151": "ALLEGHENY01",
-    "5060": "CPH-48"
+    "5060": "CPH-48",
+    "9000": "RF-R100",
+    "9001": "EB-R500",
+    "9010": "RF-R100",
+    "9011": "RF-R100"
   },
   "Back Unit": {
     "0000": "None",
     "0030": "PLATTE01",
-    "0040": "BU-MUSSELSHELL",
+    "0040": "MUSSELSHELL",
     "0201": "WHEELING01",
     "0020": "VERMILLION01",
     "0050": "POPLAR01",
@@ -328,13 +356,16 @@
     "1080": "RDF-O200",
     "1121": "RDF-O700",
     "1070": "JADORE",
-    "1131": "ACB-O710"
+    "1131": "ACB-O710",
+    "9000": "PLATTE01",
+    "9010": "EC-O300",
+    "9100": "Ac45test"
   },
   "Shoulder Unit": {
     "0000": "None",
     "0030": "BELTCREEK03",
     "0040": "NEMAHA01",
-    "0050": "SU-MUSSELSHELL",
+    "0050": "MUSSELSHELL",
     "0081": "MUSKINGUM02",
     "2031": "061ANRM",
     "5020": "LALIGURAS",
@@ -352,6 +383,9 @@
     "2010": "ADDICT",
     "1020": "EUPHORIA",
     "0061": "P-MARROW",
-    "1031": "ASB-O710"
+    "1031": "ASB-O710",
+    "9001": "BoosterTest",
+    "9000": "SM01-SCYLLA",
+    "9010": "SM01-SCYLLA"
   }
 }
