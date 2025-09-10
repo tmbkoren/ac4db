@@ -29,5 +29,5 @@ export async function signup(formData: FormData) {
   }
 
   // Redirect to a page that tells the user to check their email for verification
-  redirect('/confirm-email');
+  redirect('/signup-redirect');
 }
