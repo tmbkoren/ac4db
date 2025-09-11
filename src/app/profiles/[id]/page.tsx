@@ -4,9 +4,9 @@ import SchematicGrid from '@/components/SchematicGrid/SchematicGrid';
 import { AppShell, Box, Text } from '@mantine/core';
 
 type ProfilePageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
