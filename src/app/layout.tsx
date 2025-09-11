@@ -15,7 +15,7 @@ import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'ac4db',
-  description: 'Schematic database for 4th generation Armored Core games',
+  description: 'Schematic database for Armored Core For Answer',
 };
 
 export default async function RootLayout({
