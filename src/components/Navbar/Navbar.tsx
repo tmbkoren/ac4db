@@ -12,7 +12,6 @@ import LinkBtn from '../LinkBtn/LinkBtn';
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAnonymous, setIsAnonymous] = useState(false);
   const supabase = createClient();
   const pathname = usePathname();
 
@@ -21,10 +20,8 @@ export default function Navbar() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+      console.log('session ', session);
       setIsLoggedIn(!!session);
-      if (session) {
-        setIsAnonymous(!!session.user.is_anonymous);
-      }
     };
     checkSession();
   }, [pathname, supabase.auth]);
@@ -55,10 +52,10 @@ export default function Navbar() {
             </LinkBtn>
           )}
           <LinkBtn
-            href={isLoggedIn ? (isAnonymous ? '/login' : '/profile') : '/login'}
+            href={isLoggedIn ? '/profile' : '/login'}
             size='sm'
           >
-            {isLoggedIn ? (isAnonymous ? 'Sign Up' : 'Profile') : 'Login'}
+            {isLoggedIn ? 'Profile' : 'Login'}
           </LinkBtn>
         </Group>
 
@@ -93,11 +90,11 @@ export default function Navbar() {
             </Link>
           )}
           <Link
-            href={isLoggedIn ? (isAnonymous ? '/login' : '/profile') : '/login'}
+            href={isLoggedIn ? '/profile' : '/login'}
             className={classes.link}
             onClick={close}
           >
-            {isLoggedIn ? (isAnonymous ? 'Sign Up' : 'Profile') : 'Login'}
+            {isLoggedIn ?  'Profile' : 'Login'}
           </Link>
         </Stack>
       </Drawer>

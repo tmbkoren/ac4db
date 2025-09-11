@@ -1,10 +1,11 @@
-import { Container, Flex, Text } from '@mantine/core';
+
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import SchematicPartsDisplay from '@/components/SchematicPartsDisplay/SchematicPartsDisplay';
 import SchematicTuningDisplay from '@/components/SchematicTuningDisplay/SchematicTuningDisplay';
 import { Suspense } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+
 import {
   SchematicParts,
   SchematicTuning,
@@ -13,6 +14,8 @@ import {
 import SchematicHeader from '@/components/SchematicHeader/SchematicHeader';
 import SchematicActions from '@/components/SchematicActions/SchematicActions';
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Anchor, Container, Flex, Text } from '@mantine/core';
 
 export async function generateMetadata({
   params,
@@ -51,6 +54,10 @@ async function SchematicDetails({ id }: { id: string }) {
     .select(
       `
       *,
+      profiles (
+        user_id,
+        username
+      ),
       schematic_parts (
         slot_name,
         parts (
@@ -99,6 +106,21 @@ async function SchematicDetails({ id }: { id: string }) {
         designName={schematic.design_name}
         designerName={schematic.designer_name}
       />
+      {schematic.profiles && (
+        <Text
+          c='dimmed'
+          size='sm'
+          mt='xs'
+        >
+          Uploaded by:{' '}
+          <Anchor
+            component={Link}
+            href={`/profiles/${schematic.profiles.user_id}`}
+          >
+            {schematic.profiles.username}
+          </Anchor>
+        </Text>
+      )}
       <Text
         size='lg'
         style={{ marginTop: '1rem' }}

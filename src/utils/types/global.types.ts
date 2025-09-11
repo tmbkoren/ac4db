@@ -23,6 +23,10 @@ export type SchematicWithDetails = {
     tuning_label: string;
     tuning_value: number;
   }[];
+  profiles: {
+    user_id: string;
+    username: string | null;
+  } | null;
 };
 
 export type SchematicParts = {
