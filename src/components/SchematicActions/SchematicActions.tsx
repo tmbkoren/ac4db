@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Text, Modal, Stack } from '@mantine/core';
+import { Button, Text, Modal, Stack, Anchor, Code } from '@mantine/core';
 import LinkBtn from '@/components/LinkBtn/LinkBtn';
 import { useState } from 'react';
 
@@ -27,8 +27,46 @@ export default function SchematicActions({
       >
         {/* Placeholder for the guide */}
         <Text>
-          This is a placeholder for the guide on how to use the schematic.
+          To use the schematic you need to download the{' '}
+          <Anchor
+            href='https://github.com/tmbkoren/ACFA_Schematic_Tool/releases/latest'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {' '}
+            ACFA Schematic Tool
+          </Anchor>
+          .
         </Text>
+        <br />
+        <Text>
+          1. Place the .exe file in your `PCFA` folder, next to your `EMULATOR`
+          folder.
+        </Text>
+        <Code block>
+          -- PCFA/
+          <br />
+          ---- ACFA_Schematic_Tool.exe
+          <br />
+          ---- EMULATOR/
+        </Code>
+        <br />
+        <Text>
+          2. Run the tool, it should automatically detect your schematic data.
+          <br />
+          Otherwise, select or drag-and-drop your DESDOC.DAT file, which is
+          located in <br />
+          <i>EMULATOR/dev_hdd0/home/00000001/savedata<br />/BLUS30187ASSMBLY064</i>
+        </Text>
+        <br />
+        <Text>
+          3. If you downloaded the schematic, press <b>Import from .ac4a</b> in the tool and select the .ac4a file.
+        </Text>
+        <br />
+        <Text>
+          Otherwise, copy the schematic ID above and press <b>Import from ac4db</b> in the tool.
+        </Text>
+
       </Modal>
 
       <Stack
