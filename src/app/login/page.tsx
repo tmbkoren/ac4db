@@ -8,15 +8,16 @@ import {
   Title,
   Alert,
   Text,
+  Flex,
 } from '@mantine/core';
 import {
   loginWithDiscord,
   loginWithEmail,
   resendVerificationEmail,
 } from './actions';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import LinkBtn from '@/components/LinkBtn/LinkBtn';
+import { FaDiscord } from 'react-icons/fa';
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -32,7 +33,7 @@ export default function LoginPage() {
         order={2}
         style={{ marginBottom: '2rem', textAlign: 'center' }}
       >
-        Login
+        Sign in to your account
       </Title>
       <Stack style={{ width: '300px' }}>
         {error && error !== 'email_not_confirmed' && (
@@ -87,31 +88,31 @@ export default function LoginPage() {
               name='password'
               placeholder='Your password'
             />
-            <Button type='submit'>Login</Button>
-            <Button
-              component={Link}
-              href='/signup'
-              variant='outline'
-            >
-              Sign up
-            </Button>
+            <Button type='submit'>Sign in</Button>
           </Stack>
         </form>
-        <Stack
-          align='center'
-        >
+        <Stack align='center'>
+          <Flex gap={'md'}>
+            <LinkBtn
+              href='/signup'
+              size='sm'
+            >
+              Sign up
+            </LinkBtn>
+            <LinkBtn
+              href='/reset-password'
+              size='sm'
+            >
+              Forgot Password?
+            </LinkBtn>
+          </Flex>
+          <Text>Or</Text>
           <form
             action={loginWithDiscord}
             style={{ marginTop: '1rem' }}
           >
-            <Button type='submit'>Login with Discord</Button>
+            <Button type='submit'><FaDiscord /><Text ml={5}>Sign in with Discord</Text></Button>
           </form>
-          <LinkBtn
-            href='/reset-password'
-            size='md'
-          >
-            Forgot Password?
-          </LinkBtn>
         </Stack>
       </Stack>
     </Stack>
