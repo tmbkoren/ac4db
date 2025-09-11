@@ -4,10 +4,11 @@ import { Anchor, Burger, Container, Drawer, Group, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Navbar.module.css';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { usePathname } from 'next/navigation';
 import LinkBtn from '../LinkBtn/LinkBtn';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -43,20 +44,22 @@ export default function Navbar() {
           visibleFrom='xs'
           className={classes.linkContainer}
         >
-          {isLoggedIn && (
+          <Suspense fallback={<LoadingSpinner />}>
+            {isLoggedIn && (
+              <LinkBtn
+                href='/upload'
+                size='sm'
+              >
+                Upload
+              </LinkBtn>
+            )}
             <LinkBtn
-              href='/upload'
+              href={isLoggedIn ? '/profile' : '/login'}
               size='sm'
             >
-              Upload
+              {isLoggedIn ? 'Profile' : 'Login'}
             </LinkBtn>
-          )}
-          <LinkBtn
-            href={isLoggedIn ? '/profile' : '/login'}
-            size='sm'
-          >
-            {isLoggedIn ? 'Profile' : 'Login'}
-          </LinkBtn>
+          </Suspense>
         </Group>
 
         {/* Burger for mobile */}
@@ -94,7 +97,7 @@ export default function Navbar() {
             className={classes.link}
             onClick={close}
           >
-            {isLoggedIn ?  'Profile' : 'Login'}
+            {isLoggedIn ? 'Profile' : 'Login'}
           </Link>
         </Stack>
       </Drawer>
