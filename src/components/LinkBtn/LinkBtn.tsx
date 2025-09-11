@@ -10,7 +10,7 @@ interface LinkBtnProps {
 
 const LinkBtn = ({ href, children, size = 'md' }: LinkBtnProps) => {
   const fontSizeMap = {
-    sm: 'max(1.3vw, 14px)',
+    sm: '14px',
     md: 'max(2vw, 20px)',
     lg: 'max(2.5vw, 24px)',
   };
