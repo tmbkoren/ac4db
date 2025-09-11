@@ -17,31 +17,46 @@ export default function SignupPage() {
   const error = searchParams.get('error');
 
   return (
-    <Container size="xs" style={{ marginTop: '2rem' }}>
-      <Title order={2} style={{ marginBottom: '2rem', textAlign: 'center' }}>
+    <Container
+      size='xs'
+      style={{ marginTop: '2rem' }}
+    >
+      <Title
+        order={2}
+        style={{ marginBottom: '2rem', textAlign: 'center' }}
+      >
         Create an Account
       </Title>
       <form action={signup}>
         <Stack>
           {error && (
-            <Alert color="red" title="Signup Error">
+            <Alert
+              color='red'
+              title='Signup Error'
+            >
               {error}
             </Alert>
           )}
           <TextInput
             required
-            label="Email"
-            name="email"
-            placeholder="you@example.com"
-            type="email"
+            label='Email'
+            name='email'
+            placeholder='you@example.com'
+            type='email'
           />
           <PasswordInput
             required
-            label="Password"
-            name="password"
-            placeholder="Your password"
+            label='Password'
+            name='password'
+            placeholder='Your password'
           />
-          <Button type="submit">Sign up</Button>
+          <PasswordInput
+            required
+            label='Confirm Password'
+            name='confirm_password'
+            placeholder='Your password'
+          />
+          <Button type='submit'>Sign up</Button>
         </Stack>
       </form>
     </Container>
