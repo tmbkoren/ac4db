@@ -12,6 +12,16 @@ export default async function ProfilePage() {
     redirect('/login');
   }
 
+  const {data: usernameData, error: usernameError} = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('user_id', user.id)
+    .single();
+
+  if (usernameError || !usernameData?.username) {
+    redirect('/complete-profile');
+  }
+
   const { data: schematics, error } = await supabase
     .from('schematics')
     .select()
@@ -22,5 +32,5 @@ export default async function ProfilePage() {
     // Handle error appropriately
   }
 
-  return <ProfileClient user={user} schematics={schematics || []} />;
+  return <ProfileClient user={user} username={usernameData.username} schematics={schematics || []} />;
 }

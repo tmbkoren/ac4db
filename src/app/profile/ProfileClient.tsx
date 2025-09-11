@@ -11,11 +11,13 @@ type Schematic = Database['public']['Tables']['schematics']['Row'];
 
 interface ProfileClientProps {
   user: User;
+  username: string;
   schematics: Schematic[];
 }
 
 export default function ProfileClient({
   user,
+  username,
   schematics,
 }: ProfileClientProps) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -25,7 +27,7 @@ export default function ProfileClient({
       <Modal opened={opened} onClose={close} title="Confirm Account Deletion">
         <Text>
           Are you sure you want to delete your account? This action is
-          irreversible and all your data will be lost.
+          irreversible and all your data, including uploaded schematics, will be lost.
         </Text>
         <form action={deleteUser}>
           <Button type="submit" color="red" mt="md" fullWidth>
@@ -40,7 +42,7 @@ export default function ProfileClient({
       <Stack>
         <Paper p="md" shadow="xs">
           <Title order={2}>Profile</Title>
-          <Text>Email: {user.email}</Text>
+          <Text>Username: {username}</Text>
           <Text>Joined: {new Date(user.created_at).toLocaleDateString()}</Text>
           <form action={signOut}>
             <Button type="submit" mt="md">
@@ -51,6 +53,7 @@ export default function ProfileClient({
             Delete Account
           </Button>
         </Paper>
+        <Title order={2}>Your Schematics</Title>
         <SchematicGrid schematics={schematics || []} />
       </Stack>
     </>
