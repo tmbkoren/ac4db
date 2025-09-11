@@ -115,7 +115,7 @@ async function SchematicDetails({ id }: { id: string }) {
           Uploaded by:{' '}
           <Anchor
             component={Link}
-            href={`/profiles/${schematic.profiles.user_id}`}
+            href={`/users/${schematic.profiles.user_id}`}
           >
             {schematic.profiles.username}
           </Anchor>
