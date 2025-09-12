@@ -59,6 +59,12 @@ export default function Navbar() {
             >
               {isLoggedIn ? 'Profile' : 'Login'}
             </LinkBtn>
+            <LinkBtn
+              href='/about'
+              size='sm'
+            >
+              About
+            </LinkBtn>
           </Suspense>
         </Group>
 
@@ -98,6 +104,13 @@ export default function Navbar() {
             onClick={close}
           >
             {isLoggedIn ? 'Profile' : 'Login'}
+          </Link>
+          <Link
+            href='/about'
+            className={classes.link}
+            onClick={close}
+          >
+            About
           </Link>
         </Stack>
       </Drawer>
