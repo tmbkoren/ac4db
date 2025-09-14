@@ -50,6 +50,7 @@ const SchematicCard = ({
                 <Image
                   src={imageUrl}
                   alt={schematicName}
+                  unoptimized
                   width={260}
                   height={130}
                 />

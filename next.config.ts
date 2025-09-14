@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
         pathname: '/storage/v1/object/public/images/**',
       },
     ],
+    formats: ['image/webp'],
+    minimumCacheTTL: 2678400,
   },
   experimental: {
     serverActions: {
