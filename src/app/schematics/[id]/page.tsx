@@ -67,6 +67,9 @@ async function SchematicDetails({ id }: { id: string }) {
       schematic_tunings (
         tuning_label,
         tuning_value
+      ),
+      regulations (
+        name
       )
     `
     )
@@ -121,6 +124,12 @@ async function SchematicDetails({ id }: { id: string }) {
           </Anchor>
         </Text>
       )}
+      <Text c='dimmed' size='sm' mt='xs'>
+        Regulation: {schematic.regulations?.name}
+      </Text>
+      <Text c='dimmed' size='sm' mt='xs'>
+        {schematic.usage_type.join(', ')}
+      </Text>
       <Text
         size='lg'
         style={{ marginTop: '1rem' }}

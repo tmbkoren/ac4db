@@ -13,6 +13,7 @@ export type SchematicWithDetails = {
   file_path: string;
   user_id: string;
   game: string;
+  usage_type: string[];
   schematic_parts: {
     slot_name: string;
     parts: {
@@ -26,6 +27,9 @@ export type SchematicWithDetails = {
   profiles: {
     user_id: string;
     username: string | null;
+  } | null;
+  regulations: {
+    name: string;
   } | null;
 };
 
@@ -64,4 +68,11 @@ export type SchematicTuning = {
   horizontal_thrust_back: number;
   horizontal_thrust_main: number;
   horizontal_thrust_side: number;
+};
+
+export type Regulation = {
+  id: string;
+  family: string;
+  name: string;
+  sort_order: number;
 };

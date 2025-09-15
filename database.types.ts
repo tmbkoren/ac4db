@@ -1,3 +1,11 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
@@ -57,6 +65,27 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      regulations: {
+        Row: {
+          family: string
+          id: string
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          family: string
+          id?: string
+          name: string
+          sort_order: number
+        }
+        Update: {
+          family?: string
+          id?: string
+          name?: string
+          sort_order?: number
         }
         Relationships: []
       }
@@ -129,7 +158,9 @@ export type Database = {
           game: string | null
           id: string
           image_url: string | null
+          regulation_id: string | null
           tags: string[] | null
+          usage_type: string[] | null
           user_id: string
         }
         Insert: {
@@ -141,7 +172,9 @@ export type Database = {
           game?: string | null
           id?: string
           image_url?: string | null
+          regulation_id?: string | null
           tags?: string[] | null
+          usage_type?: string[] | null
           user_id: string
         }
         Update: {
@@ -153,10 +186,19 @@ export type Database = {
           game?: string | null
           id?: string
           image_url?: string | null
+          regulation_id?: string | null
           tags?: string[] | null
+          usage_type?: string[] | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "schematics_regulation_id_fkey"
+            columns: ["regulation_id"]
+            isOneToOne: false
+            referencedRelation: "regulations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "schematics_user_id_fkey"
             columns: ["user_id"]
@@ -171,6 +213,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_usage_type_values: {
+        Args: { usage_types: string[] }
+        Returns: boolean
+      }
       create_schematic_with_details: {
         Args: {
           p_description?: string
@@ -178,10 +224,10 @@ export type Database = {
           p_designer_name: string
           p_file_path: string
           p_image_url?: string
-          // @ts-expect-error generated
           p_parts: Json
-          // @ts-expect-error generated
+          p_regulation_id: string
           p_tunings: Json
+          p_usage_type: string[]
           p_user_id: string
         }
         Returns: string
@@ -191,10 +237,13 @@ export type Database = {
           p_leg_types?: string[]
           p_limit?: number
           p_offset?: number
+          p_regulation_family?: string
+          p_regulation_name?: string
           p_required_part_ids?: string[]
           p_search_tokens?: string[]
           p_sort_by?: string
           p_sort_direction?: string
+          p_usage_types?: string[]
         }
         Returns: {
           created_at: string

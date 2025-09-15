@@ -15,7 +15,10 @@ type SearchParams = {
   page?: string;
   legs?: string;
   parts?: string;
-}
+  reg_family?: string;
+  reg_name?: string;
+  usage?: string;
+};
 
 // Helper to get part IDs from part strings (e.g., "Head-HD-012 FATIMA")
 async function getPartIds(
@@ -35,7 +38,7 @@ async function getPartIds(
 
       const category = partString.substring(0, firstDashIndex);
       const name = partString.substring(firstDashIndex + 1);
-      console.log("Category: %s, Name: %s", category, name);
+      console.log('Category: %s, Name: %s', category, name);
 
       // Each part is an 'and' condition, checking both category and name
       return `and(lookup_category.eq.${category},name.eq.${name})`;
@@ -68,12 +71,18 @@ async function SchematicsList({
   currentPage,
   legTypes,
   partIds,
+  regulationFamily,
+  regulationName,
+  usageTypes,
 }: {
   query?: string;
   sortBy?: string;
   currentPage: number;
   legTypes?: string[];
   partIds?: string[] | null;
+  regulationFamily?: string;
+  regulationName?: string;
+  usageTypes?: string[];
 }) {
   const supabase = await createClient();
 
@@ -99,6 +108,9 @@ async function SchematicsList({
     p_search_tokens: searchTokens || undefined,
     p_leg_types: legTypes,
     p_required_part_ids: partIds || undefined,
+    p_regulation_family: regulationFamily || undefined,
+    p_regulation_name: regulationName || undefined,
+    p_usage_types: usageTypes || undefined,
     p_sort_by: sort_by,
     p_sort_direction: sort_direction,
     p_limit: ITEMS_PER_PAGE,
@@ -116,10 +128,16 @@ async function PaginationData({
   query,
   legTypes,
   partIds,
+  regulationFamily,
+  regulationName,
+  usageTypes,
 }: {
   query?: string;
   legTypes?: string[];
   partIds?: string[] | null;
+  regulationFamily?: string;
+  regulationName?: string;
+  usageTypes?: string[];
 }) {
   const supabase = await createClient();
 
@@ -130,6 +148,9 @@ async function PaginationData({
     p_search_tokens: searchTokens || undefined,
     p_leg_types: legTypes,
     p_required_part_ids: partIds || undefined,
+    p_regulation_family: regulationFamily || undefined,
+    p_regulation_name: regulationName || undefined,
+    p_usage_types: usageTypes || undefined,
     p_limit: 1,
     p_offset: 0,
   });
@@ -155,13 +176,16 @@ export default async function Home({
   const page = Number(sParams.page) || 1;
   const legTypes = sParams.legs?.split(',');
   const partParams = sParams.parts;
+  const regulationFamily = sParams.reg_family;
+  const regulationName = sParams.reg_name;
+  const usageTypes = sParams.usage?.split(',');
 
   const supabase = await createClient();
   const partIds = await getPartIds(supabase, partParams);
 
   return (
     <AppShell>
-      <Box p='md'>
+      <Box p="md">
         <AdvancedSearchAndFilter />
         <Suspense
           key={
@@ -169,7 +193,10 @@ export default async function Home({
             sortBy +
             page +
             (sParams.legs || '') +
-            (sParams.parts || '')
+            (sParams.parts || '') +
+            (sParams.reg_family || '') +
+            (sParams.reg_name || '') +
+            (sParams.usage || '')
           }
           fallback={<LoadingSpinner />}
         >
@@ -179,6 +206,9 @@ export default async function Home({
             currentPage={page}
             legTypes={legTypes}
             partIds={partIds}
+            regulationFamily={regulationFamily}
+            regulationName={regulationName}
+            usageTypes={usageTypes}
           />
         </Suspense>
         <Suspense fallback={null}>
@@ -186,6 +216,9 @@ export default async function Home({
             query={query}
             legTypes={legTypes}
             partIds={partIds}
+            regulationFamily={regulationFamily}
+            regulationName={regulationName}
+            usageTypes={usageTypes}
           />
         </Suspense>
       </Box>

@@ -7,25 +7,39 @@ import { parseAc4aFile } from '@/utils/lib/parseAc4a';
 
 export async function sendSchematic(formData: FormData) {
   const supabase = await createClient();
-  const imageFile = formData.get('image') as File;
-  const schematicFile = formData.get('schematic') as File;
-  const description = (formData.get('description') as string | null);
 
+  // --- Extract form data ---
+  const imageFile = formData.get('image') as File | null;
+  const schematicFile = formData.get('schematic') as File | null;
+  const description = formData.get('description') as string | null;
+  const regulationId = formData.get('regulation_id') as string | null;
+  const usageType = formData.getAll('usage_type') as string[];
+
+  // --- Validation ---
   if (!schematicFile) {
-    throw new Error('No file provided');
+    throw new Error('No schematic file provided.');
+  }
+  if (!regulationId) {
+    throw new Error('Regulation must be selected.');
+  }
+  if (usageType.length === 0) {
+    throw new Error('At least one usage type must be selected.');
   }
 
+  // --- Parse Schematic File ---
   const parsedSchematic = parseAc4aFile(
     Buffer.from(await schematicFile.arrayBuffer()),
     partMap
   );
 
+  // --- Generate IDs and Paths ---
   const id = randomUUID();
   const schematicPath = `${id}.ac4a`;
   const imagePath = imageFile
     ? `${id}.${imageFile.name.split('.').pop()}`
     : null;
 
+  // --- Upload Schematic File ---
   const { error: schematicUploadError } = await supabase.storage
     .from('schematics')
     .upload(schematicPath, Buffer.from(await schematicFile.arrayBuffer()), {
@@ -35,9 +49,9 @@ export async function sendSchematic(formData: FormData) {
   if (schematicUploadError) {
     throw new Error('Failed to upload schematic file');
   }
-
   const schematicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/schematics/${schematicPath}`;
 
+  // --- Upload Image File (if provided) ---
   let imageUrl: string | null = null;
   if (imageFile && imagePath) {
     const { error: imageUploadError } = await supabase.storage
@@ -49,41 +63,46 @@ export async function sendSchematic(formData: FormData) {
     if (imageUploadError) {
       throw new Error('Failed to upload image');
     }
-
     imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${imagePath}`;
   }
+
+  // --- Get User ID ---
   const { data, error } = await supabase.auth.getUser();
-  const user_id = data?.user?.id || null;
+  const user_id = data?.user?.id;
 
   if (error || !user_id) {
     throw new Error('User not authenticated');
   }
 
-  // Helper function to determine the fundamental category for database lookups
+  // --- Prepare Payload for RPC ---
   function getLookupCategory(slotName: string): string {
     if (slotName.includes('Arm Unit')) return 'Arm Unit';
     if (slotName.includes('Back Unit')) return 'Back Unit';
-    return slotName; // For Head, Core, Legs, etc., the names are the same
+    return slotName;
   }
 
-  // Transform the parser's output into the structure our RPC function needs
-  const partsPayload = parsedSchematic.parts.map(part => ({
+  const partsPayload = parsedSchematic.parts.map((part) => ({
     slot_name: part.slot_name,
     game_id: part.part_id,
     lookup_category: getLookupCategory(part.slot_name),
   }));
 
-  // Call the new RPC function to handle the entire insertion atomically
-  const { error: rpcError } = await supabase.rpc('create_schematic_with_details', {
-    p_design_name: parsedSchematic.name,
-    p_designer_name: parsedSchematic.designer,
-    p_user_id: user_id,
-    p_file_path: schematicUrl,
-    p_image_url: imageUrl || undefined,
-    p_description: description || undefined,
-    p_parts: partsPayload,
-    p_tunings: parsedSchematic.tuning,
-  });
+  // --- Call RPC Function ---
+  const { error: rpcError } = await supabase.rpc(
+    'create_schematic_with_details',
+    {
+      p_design_name: parsedSchematic.name,
+      p_designer_name: parsedSchematic.designer,
+      p_user_id: user_id,
+      p_file_path: schematicUrl,
+      p_regulation_id: regulationId,
+      p_usage_type: usageType,
+      p_image_url: imageUrl || undefined,
+      p_description: description || undefined,
+      p_parts: partsPayload,
+      p_tunings: parsedSchematic.tuning,
+    }
+  );
 
   if (rpcError) {
     console.error('Error inserting schematic via RPC:', rpcError);
