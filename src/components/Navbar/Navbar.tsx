@@ -21,7 +21,6 @@ export default function Navbar() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      console.log('session ', session);
       setIsLoggedIn(!!session);
     };
     checkSession();

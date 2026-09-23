@@ -8,6 +8,14 @@ import { parseAc4aFile } from '@/utils/lib/parseAc4a';
 export async function sendSchematic(formData: FormData) {
   const supabase = await createClient();
 
+  // --- Get User ID ---
+  const { data, error } = await supabase.auth.getUser();
+  const user_id = data?.user?.id;
+
+  if (error || !user_id) {
+    throw new Error('User not authenticated');
+  }
+
   // --- Extract form data ---
   const imageFile = formData.get('image') as File | null;
   const schematicFile = formData.get('schematic') as File | null;
@@ -64,14 +72,6 @@ export async function sendSchematic(formData: FormData) {
       throw new Error('Failed to upload image');
     }
     imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${imagePath}`;
-  }
-
-  // --- Get User ID ---
-  const { data, error } = await supabase.auth.getUser();
-  const user_id = data?.user?.id;
-
-  if (error || !user_id) {
-    throw new Error('User not authenticated');
   }
 
   // --- Prepare Payload for RPC ---

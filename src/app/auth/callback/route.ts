@@ -4,16 +4,18 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  console.log(searchParams, origin);
   const code = searchParams.get('code');
-  // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/';
+  // if "next" is in param, use it as the redirect URL.
+  // Only same-origin paths: "//evil.com", "/\evil.com" or "@evil.com" would redirect off-site.
+  const nextParam = searchParams.get('next') ?? '/';
+  const next = /^\/(?![/\\])/.test(nextParam) ? nextParam : '/';
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    console.log('CALLBACK: ', code, error);
-    if (!error) {
+    if (error) {
+      console.error('Code exchange failed:', error.message);
+    } else {
       const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development';
 

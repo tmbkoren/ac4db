@@ -19,7 +19,7 @@ import {
   Flex,
   Paper,
 } from '@mantine/core';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone } from '@mantine/dropzone';
 import { FiUpload, FiImage, FiX } from 'react-icons/fi';
 import { sendSchematic } from '@/app/upload/actions';
 import Image from 'next/image';
@@ -32,6 +32,8 @@ import { Regulation } from '@/utils/types/global.types';
 
 
 const usageTypes = ['PvP', 'PvE', 'Meme'];
+// Must match allowed_mime_types on the `images` bucket (no SVG: public bucket).
+const imageMimeTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/avif'];
 
 export default function UploadPage() {
   // --- Component State ---
@@ -96,7 +98,7 @@ export default function UploadPage() {
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       const item = Array.from(e.clipboardData?.items || []).find((i) =>
-        i.type.startsWith('image/')
+        imageMimeTypes.includes(i.type)
       );
       if (item) {
         const file = item.getAsFile();
@@ -173,7 +175,6 @@ export default function UploadPage() {
           message: 'Your schematic has been uploaded.',
           color: 'green',
         });
-        // Consider redirecting the user after successful upload
       } catch (e) {
         const errorMessage =
           e instanceof Error ? e.message : 'An unknown error occurred.';
@@ -248,7 +249,7 @@ export default function UploadPage() {
           <Dropzone
             onDrop={handleImageDrop}
             maxSize={5 * 1024 ** 2}
-            accept={IMAGE_MIME_TYPE}
+            accept={imageMimeTypes}
             openRef={imageInputRef}
           >
             <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
